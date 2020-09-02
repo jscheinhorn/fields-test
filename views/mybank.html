@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="/mybank.css" />
+  </head>
+  <!--
+      <script src="https://localhost.paypal.com:8443/sdk/js?client-id=AYLa6UCw47Baut1LJ3TojVJBDe8ZkzAutZjWP7fVOCafaJ8em97GrHFW7EJXKcMjGcueM-R_AFa-cadq&debug=true&components=buttons,fields,marks&buyer-country=IT"></script>
+-->
+  <script src="https://www.msmaster.qa.paypal.com/sdk/js?client-id=AYLa6UCw47Baut1LJ3TojVJBDe8ZkzAutZjWP7fVOCafaJ8em97GrHFW7EJXKcMjGcueM-R_AFa-cadq&debug=true&components=buttons,fields,marks&buyer-country=IT"></script>
+
+  <script>
+    console.log('PayPal SDK version:', paypal.version)
+  </script>
+
+  <body>
+    <h3>Enter payment method</h3>
+    <br />
+
+    <label>
+      <input
+        type="radio"
+        name="payment-option"
+        value="paypal"
+        id="paypal-radio"
+        checked
+      />
+      <span id="paypal-mark"></span>
+    </label>
+
+    <label>
+      <input
+        id="mybank-radio"
+        value="mybank"
+        name="payment-option"
+        type="radio"
+      />
+      <span id="mybank-mark"></span>
+    </label>
+
+    <div id="mybank-container"></div>
+
+    <div id="paypal-btn"></div>
+    <div id="mybank-btn"></div>
+
+    <script src="/mybank.js"></script>
+  </body>
+</html>
