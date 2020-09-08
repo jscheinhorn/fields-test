@@ -81,7 +81,7 @@ paypal
     style,
     fields: {
       name: {
-        value: 'Louis van Gaal',
+        value: '',
         hidden: false,
       },
     },
