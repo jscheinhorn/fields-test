@@ -35,6 +35,10 @@ const order = {
       },
     },
   ],
+  redirect_urls: {
+    return_url: 'https://example.com/return',
+    cancel_url: 'https://example.com/cancel',
+  },
 }
 
 /* -----
