@@ -36,8 +36,8 @@ const order = {
     },
   ],
   application_context: {
-    return_url: 'http://localhost:8080/success.html',
-    cancel_url: 'http://localhost:8080/cancel.html',
+    return_url: `${window.location.origin}/success.html`,
+    cancel_url: `${window.location.origin}/cancel.html`,
   },
 }
 

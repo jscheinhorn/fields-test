@@ -35,9 +35,9 @@ const order = {
       },
     },
   ],
-  redirect_urls: {
-    return_url: 'https://example.com/return',
-    cancel_url: 'https://example.com/cancel',
+  application_context: {
+    return_url: `${window.location.origin}/success.html`,
+    cancel_url: `${window.location.origin}/cancel.html`,
   },
 }
 

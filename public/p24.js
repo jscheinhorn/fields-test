@@ -35,6 +35,10 @@ const order = {
       },
     },
   ],
+  application_context: {
+    return_url: `${window.location.origin}/success.html`,
+    cancel_url: `${window.location.origin}/cancel.html`,
+  },
 }
 
 /* -----
