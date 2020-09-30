@@ -35,9 +35,9 @@ const order = {
       },
     },
   ],
-  redirect_urls: {
-    return_url: 'https://example.com/return',
-    cancel_url: 'https://example.com/cancel',
+  application_context: {
+    return_url: 'http://localhost:8080/success.html',
+    cancel_url: 'http://localhost:8080/cancel.html',
   },
 }
 
