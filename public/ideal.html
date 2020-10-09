@@ -4,22 +4,25 @@
     <title></title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <link rel="stylesheet" href="/ideal.css" />
   </head>
-  <!--
-  <script src="https://localhost.paypal.com:8443/sdk/js?client-id=AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC&debug=true&components=buttons,fields,marks&buyer-country=NL&currency=EUR"></script>
+  <!-- SANDBOX -->
+  <!-- <script src="https://www.paypal.com/sdk/js?client-id=AWpNai5MkBQDlnUmeYU02YHGOEkUs-ib8ufPtamRXZ_Uc8BuRJ6gCcaBZ-IVKBCBDtuw_7JRmbmdbERa&components=buttons,fields,marks&buyer-country=NL&currency=EUR"></script> -->
+  <!-- LOCAL -->
+  <!-- <script src="https://localhost.paypal.com:8443/sdk/js?client-id=AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC&debug=true&components=buttons,fields,marks&buyer-country=NL&currency=EUR"></script> -->
+  <!-- MSMASTER -->
+  <!-- <script src="https://www.msmaster.qa.paypal.com/sdk/js?client-id=AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC&components=buttons,fields,marks&buyer-country=NL&currency=EUR"></script> -->
+  <!-- TEST ENV 1-->
+  <!-- <script src="https://www.te-alm-23316952001471623082593.qa.paypal.com/sdk/js?client-id=AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC&components=buttons,fields,marks&buyer-country=NL&currency=EUR"></script> -->
+  <!-- TEST ENV 2 -->
+  <!-- <script src="https://www.te-alm-23542932002484835482273.qa.paypal.com/sdk/js?client-id=AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC&components=buttons,fields,marks&buyer-country=NL&currency=EUR"></script> -->
 
-
-  <script src="https://www.msmaster.qa.paypal.com/sdk/js?client-id=AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC&debug=true&components=buttons,fields,marks&buyer-country=NL"></script>
--->
-  <script src="https://www.te-alm-23316952001471623082593.qa.paypal.com/sdk/js?client-id=AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC&components=buttons,fields,marks&buyer-country=NL&currency=EUR"></script>
-
-  <script>
+  <!-- <script>
     console.log('PayPal SDK version:', paypal.version)
-  </script>
+  </script> -->
 
   <body>
+    <script src="idealSdk.js"></script>
     <h3>Enter payment method</h3>
     <br />
 
@@ -62,6 +65,6 @@
     <div id="ideal-btn"></div>
     <div id="sofort-btn"></div>
 
-    <script src="/ideal.js"></script>
+    <!-- <script async src="/ideal.js"></script> -->
   </body>
 </html>

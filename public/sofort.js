@@ -1,4 +1,10 @@
 /* eslint-disable consistent-return, new-cap, no-alert, no-console */
+const preFill = sessionStorage.preFill
+console.log({ preFill })
+let name = ''
+if (preFill === 'true') {
+  name = 'John Smith'
+}
 
 const style = {
   base: {
@@ -83,6 +89,12 @@ paypal
   .Fields({
     fundingSource: paypal.FUNDING.SOFORT,
     style,
+    fields: {
+      name: {
+        value: name,
+        hidden: false,
+      },
+    },
   })
   .render('#sofort-container')
 
