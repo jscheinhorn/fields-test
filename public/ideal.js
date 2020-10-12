@@ -3,6 +3,11 @@ const preFill = sessionStorage.preFill
 console.log({ preFill })
 console.log('sessionStorage.environment: ', sessionStorage.environment)
 
+if (typeof paypal === 'undefined') {
+  // window.location.reload()
+  console.log({ paypal })
+}
+
 let name = ''
 if (preFill === 'true') {
   name = 'John Smith'
