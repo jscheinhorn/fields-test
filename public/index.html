@@ -24,7 +24,8 @@
           Merchant Options
         </p>
         <div class="form" style="padding-left:30px">
-          <form action="/">
+          <!-- autocomplete off to reset dropdown options on back button -->
+          <form action="/" autocomplete="off">
             <input
               id="pre-fill"
               type="checkbox"
@@ -46,7 +47,7 @@
             <div id="test-env-div" style="display:none">
               <label for="test-env"> Test Environment: </label>
               <select name="test-env" id="test-env">
-                <option value="" selected="selected"
+                <option value="" selected
                   >Please select a test environment</option
                 >
                 <option value="te-alm-23316952001471623082593"

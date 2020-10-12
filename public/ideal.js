@@ -1,12 +1,37 @@
 /* eslint-disable consistent-return, new-cap, no-alert, no-console */
+payPalSdk = {
+  sandbox:
+    'paypal.com/sdk/js?client-id=AWpNai5MkBQDlnUmeYU02YHGOEkUs-ib8ufPtamRXZ_Uc8BuRJ6gCcaBZ-IVKBCBDtuw_7JRmbmdbERa&components=buttons,fields,marks&buyer-country=NL&currency=EUR',
+  msmaster:
+    'msmaster.qa.paypal.com/sdk/js?client-id=AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC&components=buttons,fields,marks&buyer-country=NL&currency=EUR',
+  testEnv:
+    '.qa.paypal.com/sdk/js?client-id=AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC&components=buttons,fields,marks&buyer-country=NL&currency=EUR',
+}
+let src = 'https://www.'
+switch (sessionStorage.environment) {
+  case 'sandbox':
+    src += payPalSdk.sandbox
+    break
+  case 'msmaster':
+    src += payPalSdk.msmaster
+    break
+  default:
+    src += sessionStorage.environment + payPalSdk.testEnv
+}
+console.log({ src })
+
+let script1 = document.createElement('SCRIPT')
+script1.src = src
+script1.onload = idealRender
+document.head.appendChild(script1)
+// document.getElementsByTagName('HEAD')[0].appendChild(script1)
+// let script2 = document.createElement('SCRIPT')
+// script2.src = '/ideal.js'
+// document.getElementsByTagName('BODY')[0].appendChild(script2)
+
 const preFill = sessionStorage.preFill
 console.log({ preFill })
 console.log('sessionStorage.environment: ', sessionStorage.environment)
-
-if (typeof paypal === 'undefined') {
-  // window.location.reload()
-  console.log({ paypal })
-}
 
 let name = ''
 if (preFill === 'true') {
@@ -54,122 +79,124 @@ const order = {
   },
 }
 
-/* -----
+function idealRender() {
+  /* -----
 PAYPAL
 ------ */
-paypal
-  .Marks({
-    fundingSource: paypal.FUNDING.PAYPAL,
-  })
-  .render('#paypal-mark')
+  paypal
+    .Marks({
+      fundingSource: paypal.FUNDING.PAYPAL,
+    })
+    .render('#paypal-mark')
 
-paypal
-  .Buttons({
-    fundingSource: paypal.FUNDING.PAYPAL,
+  paypal
+    .Buttons({
+      fundingSource: paypal.FUNDING.PAYPAL,
 
-    style: {
-      label: 'pay',
-    },
+      style: {
+        label: 'pay',
+      },
 
-    createOrder(data, actions) {
-      return actions.order.create(order)
-    },
+      createOrder(data, actions) {
+        return actions.order.create(order)
+      },
 
-    onApprove(data, actions) {
-      return actions.order.capture().then(function(details) {
-        alert(`Transaction completed by ${details.payer.name.given_name}!`)
-      })
-    },
-  })
-  .render('#paypal-btn')
+      onApprove(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert(`Transaction completed by ${details.payer.name.given_name}!`)
+        })
+      },
+    })
+    .render('#paypal-btn')
 
-/* -----
+  /* -----
 IDEAL
 ------ */
-paypal
-  .Marks({
-    fundingSource: paypal.FUNDING.IDEAL,
-  })
-  .render('#ideal-mark')
+  paypal
+    .Marks({
+      fundingSource: paypal.FUNDING.IDEAL,
+    })
+    .render('#ideal-mark')
 
-paypal
-  .Fields({
-    fundingSource: paypal.FUNDING.IDEAL,
-    style,
-    fields: {
-      name: {
-        value: name,
-        hidden: false,
+  paypal
+    .Fields({
+      fundingSource: paypal.FUNDING.IDEAL,
+      style,
+      fields: {
+        name: {
+          value: name,
+          hidden: false,
+        },
+        email: {
+          value: name,
+          hidden: false,
+        },
       },
-      email: {
-        value: name,
-        hidden: false,
+    })
+    .render('#ideal-container')
+
+  paypal
+    .Buttons({
+      fundingSource: paypal.FUNDING.IDEAL,
+
+      style: {
+        label: 'pay',
       },
-    },
-  })
-  .render('#ideal-container')
 
-paypal
-  .Buttons({
-    fundingSource: paypal.FUNDING.IDEAL,
+      createOrder(data, actions) {
+        return actions.order.create(order)
+      },
 
-    style: {
-      label: 'pay',
-    },
+      onApprove(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert(`Transaction completed by ${details.payer.name.given_name}!`)
+        })
+      },
+    })
+    .render('#ideal-btn')
 
-    createOrder(data, actions) {
-      return actions.order.create(order)
-    },
-
-    onApprove(data, actions) {
-      return actions.order.capture().then(function(details) {
-        alert(`Transaction completed by ${details.payer.name.given_name}!`)
-      })
-    },
-  })
-  .render('#ideal-btn')
-
-/* -----
+  /* -----
 SOFORT
 ------ */
-paypal
-  .Marks({
-    fundingSource: paypal.FUNDING.SOFORT,
-  })
-  .render('#sofort-mark')
+  paypal
+    .Marks({
+      fundingSource: paypal.FUNDING.SOFORT,
+    })
+    .render('#sofort-mark')
 
-paypal
-  .Fields({
-    fundingSource: paypal.FUNDING.SOFORT,
-    style,
-    fields: {
-      name: {
-        value: name,
-        hidden: false,
+  paypal
+    .Fields({
+      fundingSource: paypal.FUNDING.SOFORT,
+      style,
+      fields: {
+        name: {
+          value: name,
+          hidden: false,
+        },
       },
-    },
-  })
-  .render('#sofort-container')
+    })
+    .render('#sofort-container')
 
-paypal
-  .Buttons({
-    fundingSource: paypal.FUNDING.SOFORT,
+  paypal
+    .Buttons({
+      fundingSource: paypal.FUNDING.SOFORT,
 
-    style: {
-      label: 'pay',
-    },
+      style: {
+        label: 'pay',
+      },
 
-    createOrder(data, actions) {
-      return actions.order.create(order)
-    },
+      createOrder(data, actions) {
+        return actions.order.create(order)
+      },
 
-    onApprove(data, actions) {
-      return actions.order.capture().then(function(details) {
-        alert(`Transaction completed by ${details.payer.name.given_name}!`)
-      })
-    },
-  })
-  .render('#sofort-btn')
+      onApprove(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert(`Transaction completed by ${details.payer.name.given_name}!`)
+        })
+      },
+    })
+    .render('#sofort-btn')
+}
 
 /* -----
 RADIO BUTTONS
