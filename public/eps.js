@@ -107,13 +107,20 @@ paypal
     },
 
     createOrder(data, actions) {
-      return actions.order.create(order)
+      return actions.order.create(order).then(result => {
+        console.log({ result })
+        return result
+      })
     },
 
     onApprove(data, actions) {
-      return actions.order.capture().then(function(details) {
-        alert(`Transaction completed by ${details.payer.name.given_name}!`)
+      return actions.order.capture().then(onApprove => {
+        console.log({ onApprove })
+        return onApprove
       })
+      // .then(function(details) {
+      //   alert(`Transaction completed by ${details.payer.name.given_name}!`)
+      // })
     },
   })
   .render('#eps-btn')

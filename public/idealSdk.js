@@ -22,7 +22,3 @@ console.log({ src })
 let script1 = document.createElement('SCRIPT')
 script1.src = src
 document.getElementsByTagName('HEAD')[0].appendChild(script1)
-
-// let script2 = document.createElement('SCRIPT')
-// script2.src = '/ideal.js'
-// document.getElementsByTagName('BODY')[0].appendChild(script2)

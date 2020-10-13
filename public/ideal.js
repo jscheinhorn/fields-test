@@ -1,4 +1,6 @@
 /* eslint-disable consistent-return, new-cap, no-alert, no-console */
+// import swal from 'sweetalert'; // This will be for the popup after onApprove
+
 payPalSdk = {
   sandbox:
     'paypal.com/sdk/js?client-id=AWpNai5MkBQDlnUmeYU02YHGOEkUs-ib8ufPtamRXZ_Uc8BuRJ6gCcaBZ-IVKBCBDtuw_7JRmbmdbERa&components=buttons,fields,marks&buyer-country=NL&currency=EUR',
@@ -24,10 +26,6 @@ let script1 = document.createElement('SCRIPT')
 script1.src = src
 script1.onload = idealRender
 document.head.appendChild(script1)
-// document.getElementsByTagName('HEAD')[0].appendChild(script1)
-// let script2 = document.createElement('SCRIPT')
-// script2.src = '/ideal.js'
-// document.getElementsByTagName('BODY')[0].appendChild(script2)
 
 const preFill = sessionStorage.preFill
 console.log({ preFill })
@@ -80,6 +78,8 @@ const order = {
 }
 
 function idealRender() {
+  console.log('PayPal SDK version:', paypal.version)
+
   /* -----
 PAYPAL
 ------ */
@@ -103,6 +103,7 @@ PAYPAL
 
       onApprove(data, actions) {
         return actions.order.capture().then(function(details) {
+          console.log({ details })
           alert(`Transaction completed by ${details.payer.name.given_name}!`)
         })
       },
