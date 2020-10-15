@@ -6,21 +6,24 @@ document.querySelector('form').addEventListener('submit', function(event) {
 
 // Pre-fill buyer information
 document.getElementById('pre-fill').checked = sessionStorage.preFill
-
 document.getElementById('pre-fill').addEventListener('click', function(event) {
   sessionStorage.preFill = event.target.checked
   console.log('event.target.checked: ', event.target.checked)
   console.log('sessionStorage.preFill : ', sessionStorage.preFill)
 })
-
 console.log('sessionStorage.preFill: ', sessionStorage.preFill)
 
-// Environment selection elements
+// Constants
 const envDropdown = document.getElementById('environment')
 const testEnvDropdown = document.getElementById('test-env')
 const otherTestEnv = document.getElementById('other-test-env')
+const clientId = document.getElementById('client-id')
+sessionStorage.sandboxDefaultId =
+  'AWpNai5MkBQDlnUmeYU02YHGOEkUs-ib8ufPtamRXZ_Uc8BuRJ6gCcaBZ-IVKBCBDtuw_7JRmbmdbERa'
+sessionStorage.otherDefaultId =
+  'AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC'
 
-// Display test environment options when one is already selected (case: back button)
+// Display test environment options when one is already selected (case: user hits back button)
 if (
   typeof sessionStorage.environment !== 'undefined' &&
   sessionStorage.environment[0] === 't'
@@ -29,16 +32,30 @@ if (
   envDropdown.selectedIndex = 3
 }
 
+// Retain custom client ID if already entered (case: user hits back button)
+if (sessionStorage.environment === 'sandbox' && !sessionStorage.customId) {
+  clientId.value = sessionStorage.sandboxDefaultId
+} else if (!sessionStorage.customId) {
+  clientId.value = sessionStorage.otherDefaultId
+} else {
+  clientId.value = sessionStorage.customId
+}
+
 // Envrionment dropdown options
 envDropdown.onchange = function() {
+  sessionStorage.customId = ''
   if (document.getElementById('currentEnv')) {
     document.getElementById('currentEnv').remove()
   }
   document.getElementById('warning').style.display = 'none'
   const envSelection = envDropdown.options[envDropdown.selectedIndex].value
-  console.log({ envSelection })
-
   sessionStorage.environment = envSelection
+
+  if (envSelection === 'sandbox') {
+    clientId.value = sessionStorage.sandboxDefaultId
+  } else {
+    clientId.value = sessionStorage.otherDefaultId
+  }
   if (envSelection === 'stage') {
     document.getElementById('test-env-div').style.display = 'block'
   } else {
@@ -66,8 +83,12 @@ testEnvDropdown.onchange = function() {
 
 // Accept custom test environment (stage)
 otherTestEnv.addEventListener('input', function() {
-  console.log(otherTestEnv.value)
   sessionStorage.environment = 'te-alm-' + otherTestEnv.value
+})
+// Accept custom client id
+console.log('custom client id: ', sessionStorage.customId)
+clientId.addEventListener('input', function() {
+  sessionStorage.customId = clientId.value
 })
 
 // Prevent navigation if no test environment selected
