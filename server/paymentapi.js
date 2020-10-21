@@ -2,7 +2,7 @@ import { getRequestUrl, getAuthUrl } from './apiconfig'
 import fetch from 'node-fetch'
 // import btoa from 'btoa'
 import https from 'https'
-import servicecore from 'servicecore'
+// import servicecore from 'servicecore'
 
 // Auth Token Request
 export async function postGetAuthToken(req, res) {
