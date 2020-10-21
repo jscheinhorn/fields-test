@@ -1,45 +1,18 @@
+/* eslint-disable promise/always-return */
 /* eslint-disable consistent-return, new-cap, no-alert, no-console */
-// import swal from 'sweetalert'; // This will be for the popup after onApprove
+import configureSdk from './configureSdk.js'
+// import * as swal from 'sweetalert' // This will be for the popup after onApprove,
+// sweetalert has an issue with typescript (needs Swal type specified) and needs:
+// npm install --save @types/sweetalert
 
-let src = 'https://www.'
-let params = '&components=buttons,fields,marks&buyer-country=NL&currency=EUR'
-let clientId
-payPalSdk = {
-  sandbox: 'paypal.com/sdk/js?',
-  msmaster: 'msmaster.qa.paypal.com/sdk/js?',
-  testEnv: '.qa.paypal.com/sdk/js?',
-}
+const src = configureSdk()
+let script = document.createElement('SCRIPT')
+script.src = src
+script.onload = idealRender
+document.head.appendChild(script)
 
-switch (sessionStorage.environment) {
-  case 'sandbox':
-    src += payPalSdk.sandbox
-    clientId = sessionStorage.customId
-      ? sessionStorage.customId
-      : sessionStorage.sandboxDefaultId
-    break
-  case 'msmaster':
-    src += payPalSdk.msmaster
-    clientId = sessionStorage.customId
-      ? sessionStorage.customId
-      : sessionStorage.otherDefaultId
-    break
-  default:
-    src += sessionStorage.environment + payPalSdk.testEnv
-    clientId = sessionStorage.customId
-      ? sessionStorage.customId
-      : sessionStorage.otherDefaultId
-}
-src += `client-id=${clientId}` + params
-console.log({ clientId })
-console.log({ src })
-
-let script1 = document.createElement('SCRIPT')
-script1.src = src
-script1.onload = idealRender
-document.head.appendChild(script1)
-
-const preFill = sessionStorage.preFill
-console.log({ preFill })
+const { preFill, serverSide } = sessionStorage
+console.log({ preFill, serverSide })
 console.log('sessionStorage.environment: ', sessionStorage.environment)
 
 let name = ''
@@ -155,13 +128,55 @@ IDEAL
         label: 'pay',
       },
 
-      createOrder(data, actions) {
-        return actions.order.create(order)
+      async createOrder(data, actions) {
+        console.log({ data, actions })
+        let envi = sessionStorage.environment // want to specify for createOrderUrl
+        if (serverSide === 'true') {
+          let [prefix, queryParams] = src.split('?')
+          console.log({ queryParams })
+          if (envi === 'sandbox') {
+            queryParams += '&sandbox=1'
+          } else if (envi === 'live') {
+            queryParams += '&live=1'
+          }
+          let authUrl = '/api/getauthtoken?' + queryParams
+          let createOrderUrl = '/api/createpayment?' + queryParams
+
+          console.log({ envi })
+          const authResponse = await fetch(authUrl, {
+            method: 'post',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({ stage: envi }),
+          })
+          const authResponseJson = await authResponse.json()
+          console.log({ authResponseJson })
+          const accessToken = authResponseJson.access_token
+
+          return fetch(createOrderUrl, {
+            method: 'get',
+            headers: {
+              'content-type': 'application/json',
+              'access-token': accessToken,
+            },
+          })
+            .then(res => res.json())
+            .then(jsonData => console.log({ jsonData }))
+        }
+        return actions.order.create(order).then(createdOrderReturn => {
+          console.log({ createdOrderReturn })
+          return createdOrderReturn
+        })
       },
 
       onApprove(data, actions) {
-        return actions.order.capture().then(function(details) {
-          alert(`Transaction completed by ${details.payer.name.given_name}!`)
+        // Currently not being called. Aditya is working on it.
+        console.log({ data, actions })
+        return actions.order.capture().then(capturedata => {
+          const capturedataString = JSON.stringify(capturedata, null, 2)
+          console.log(capturedataString)
+          alert(capturedataString)
         })
       },
     })

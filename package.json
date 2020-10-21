@@ -3,11 +3,20 @@
   "version": "1.0.0",
   "description": "Merchant Example for e2e",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server/index.js --exec babel-node"
   },
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "btoa": "^1.2.1",
     "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
     "nodemon": "^2.0.4",
-    "react-dev-utils": "^10.2.1"
+    "react-dev-utils": "^10.2.1",
+    "servicecore": "^3.4.3",
+    "sweetalert": "^2.1.2"
+  },
+  "devDependencies": {
+    "@babel/node": "^7.12.1"
   }
 }

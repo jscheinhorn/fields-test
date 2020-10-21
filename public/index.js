@@ -13,6 +13,17 @@ document.getElementById('pre-fill').addEventListener('click', function(event) {
 })
 console.log('sessionStorage.preFill: ', sessionStorage.preFill)
 
+// Server-side integration
+document.getElementById('server-side').checked = sessionStorage.serverSide
+document
+  .getElementById('server-side')
+  .addEventListener('click', function(event) {
+    sessionStorage.serverSide = event.target.checked
+    console.log('server-side checked: ', event.target.checked)
+    console.log('sessionStorage.serverSide : ', sessionStorage.serverSide)
+  })
+console.log('sessionStorage.serverSide: ', sessionStorage.serverSide)
+
 // Constants
 const envDropdown = document.getElementById('environment')
 const testEnvDropdown = document.getElementById('test-env')
@@ -96,7 +107,7 @@ document.getElementsByClassName('list-group')[0].onclick = function(event) {
   if (
     sessionStorage.environment === 'stage' ||
     sessionStorage.environment === 'other' ||
-    sessionStorage.environment == false
+    !sessionStorage.environment
   ) {
     event.preventDefault()
     document.getElementById('warning').style.display = 'block'
