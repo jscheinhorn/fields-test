@@ -3,6 +3,7 @@ const { join } = require('path')
 const api = require('./api')
 // const openBrowser = require('react-dev-utils/openBrowser')
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 const app = express()
 
 app.use(express.urlencoded({ extended: true }))
