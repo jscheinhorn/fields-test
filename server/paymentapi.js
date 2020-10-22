@@ -1,17 +1,15 @@
-import { getRequestUrl, getAuthUrl } from './apiconfig'
+import { createOrderUrl, getAuthUrl } from './apiconfig'
 import fetch from 'node-fetch'
 // import btoa from 'btoa'
 import https from 'https'
+import { access } from 'fs'
 // import servicecore from 'servicecore'
 
 // Auth Token Request
 export async function postGetAuthToken(req, res) {
   const { live, sandbox, 'client-id': clientId } = req.query
-  console.log({ live, sandbox, clientId }, req.query)
   const { stage } = req.body
-  console.log('**** ** req.body ** ****', req.body)
   const authUrl = getAuthUrl({ live, sandbox, stage })
-  console.log({ authUrl, clientId })
   const basicAuth = Buffer.from(clientId).toString('base64')
 
   // // ADDED TO USE SERVICECORE IN LIEU OF FETCH:
@@ -34,7 +32,7 @@ export async function postGetAuthToken(req, res) {
   //   body: 'grant_type=client_credentials',
   // })
 
-  // USING FETCH
+  // USING FETCH (CANNOT USE SERVICECORE ON HEROKU)
   const response = await fetch(authUrl, {
     method: 'POST',
     body: 'grant_type=client_credentials',
@@ -51,64 +49,67 @@ export async function postGetAuthToken(req, res) {
 
 // Create Order Request
 export async function createPaymentHandler(req, res) {
-  const queryParams = req.query
-  const stage = queryParams.stage || 'msmaster'
-  const {
-    total,
-    currency,
-    locale,
-    email,
-    thirdParty,
-    shippingPreference,
-    live,
-    sandbox,
-    prefilledShippingAddress,
-    prefilledCartDetails,
-    noexecute,
-  } = queryParams
+  const { live, sandbox } = req.query
+  const { order, stage, accessToken } = req.body
+  // console.log({order, stage, accessToken})
+  // const stage = queryParams.stage || 'msmaster'
+  // const {
+  //   total,
+  //   currency,
+  //   locale,
+  //   email,
+  //   thirdParty,
+  //   shippingPreference,
+  //   live,
+  //   sandbox,
+  //   prefilledShippingAddress,
+  //   prefilledCartDetails,
+  //   noexecute,
+  // } = queryParams
   const originHostUrl = `${req.protocol}://${req.get('host')}`
 
-  const countryCode = locale.slice(-2)
+  // const countryCode = locale.slice(-2)
 
-  const requestUrl = getRequestUrl({ live, sandbox, stage })
+  const requestUrl = createOrderUrl({ live, sandbox, stage })
   //   const cred = getDefaultCred({ live, sandbox })
-  let returnUrl = `${originHostUrl}${req.originalUrl}` // using here? or already w/i application context
+  // let returnUrl = `${originHostUrl}${req.originalUrl}` // using here? or already w/i application context
   //   const cancelUrl = `${originHostUrl}/api/cancel` // not used here
-  console.log({ returnUrl })
+  // console.log({ requestUrl })
 
-  const payload = mapToCreatePayment({
-    amount,
-    items,
-    shippingPreference,
-    payerInfo: { email },
-    shippingAddress: prefilledShippingAddress && addresses[countryCode],
-    thirdPartyMerchantEmail,
-    returnUrl,
-    cancelUrl,
-  })
-
-  const response = await sendRequest({
+  // const payload = mapToCreatePayment({
+  //   amount,
+  //   items,
+  //   shippingPreference,
+  //   payerInfo: { email },
+  //   shippingAddress: prefilledShippingAddress && addresses[countryCode],
+  //   thirdPartyMerchantEmail,
+  //   returnUrl,
+  //   cancelUrl,
+  // })
+  // You Were about to go ahead and make sure the order, auth token, and stage are being sent down here
+  const response = await fetch(requestUrl, {
     method: 'POST',
-    url: requestUrl,
-    data: payload,
+    body: JSON.stringify(order),
     headers: {
-      'X-PAYPAL-SECURITY-CONTEXT': securityContext,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   })
-
-  resSendResponse(res, response)
+  const json = await response.json()
+  console.log({ json })
+  res.send(json)
+  // resSendResponse(res, response)
 }
 
 // Helper Functions
 export function resSendError(res, serviceResponse) {
-  resSetCorrelationId(res, serviceResponse)
+  // resSetCorrelationId(res, serviceResponse)
   res.status(serviceResponse.status).send(serviceResponse.data)
 }
 
 export function resSendResponse(res, serviceResponse, mapFrom) {
   if (serviceResponse.status === 200 || serviceResponse.status === 201) {
-    resSetCorrelationId(res, serviceResponse)
+    // resSetCorrelationId(res, serviceResponse)
     res.send(mapFrom(serviceResponse.data))
   } else {
     resSendError(res, serviceResponse)

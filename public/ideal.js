@@ -47,6 +47,7 @@ const style = {
 }
 
 const order = {
+  intent: 'CAPTURE',
   purchase_units: [
     {
       amount: {
@@ -130,7 +131,7 @@ IDEAL
 
       async createOrder(data, actions) {
         console.log({ data, actions })
-        let envi = sessionStorage.environment // want to specify for createOrderUrl
+        let envi = sessionStorage.environment // want to specify for createPaymentUrl
         if (serverSide === 'true') {
           let [prefix, queryParams] = src.split('?')
           console.log({ queryParams })
@@ -140,7 +141,7 @@ IDEAL
             queryParams += '&live=1'
           }
           let authUrl = '/api/getauthtoken?' + queryParams
-          let createOrderUrl = '/api/createpayment?' + queryParams
+          let createPaymentUrl = '/api/createpayment?' + queryParams
 
           console.log({ envi })
           const authResponse = await fetch(authUrl, {
@@ -155,20 +156,23 @@ IDEAL
           const accessToken = authResponseJson.access_token
           console.log('accessToken: ' + accessToken)
 
-          // return fetch(createOrderUrl, {
-          //   method: 'get',
-          //   headers: {
-          //     'content-type': 'application/json',
-          //     'access-token': accessToken,
-          //   },
-          // })
-          //   .then(res => res.json())
-          //   .then(jsonData => console.log({ jsonData }))
+          return fetch(createPaymentUrl, {
+            method: 'post',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({ stage: envi, order, accessToken }),
+          })
+            .then(res => res.json())
+            .then(jsonData => {
+              console.log({ jsonData })
+              return jsonData.id
+            })
         }
-        // return actions.order.create(order).then(createdOrderReturn => {
-        //   console.log({ createdOrderReturn })
-        //   return createdOrderReturn
-        // })
+        return actions.order.create(order).then(createdOrderReturn => {
+          console.log({ createdOrderReturn })
+          return createdOrderReturn
+        })
       },
 
       onApprove(data, actions) {

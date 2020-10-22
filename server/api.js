@@ -6,7 +6,7 @@ const Router = require('express')
 const router = Router()
 
 router.post('/getauthtoken', catchErrors(paymentapi.postGetAuthToken))
-router.get('/createpayment', catchErrors(paymentapi.createPaymentHandler))
+router.post('/createpayment', catchErrors(paymentapi.createPaymentHandler))
 
 router.use('*', function(req, res, next) {
   console.log('PROBLEM')

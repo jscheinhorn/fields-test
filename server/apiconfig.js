@@ -2,16 +2,17 @@ import apienv from './apienv'
 
 export function getAuthUrl({ live, sandbox, stage }) {
   const apiConfig = getApiConfig({ live, sandbox })
-  console.log('*** *** STAGE *** ***', stage)
   const postAuthUrl = normalizeStageContext(apiConfig.authUrl, stage)
 
   return postAuthUrl
 }
 
 // create ordersUrl based on environment
-export function getRequestUrl({ live, sandbox, stage }) {
+export function createOrderUrl({ live, sandbox, stage }) {
   const apiConfig = getApiConfig({ live, sandbox })
+  console.log('*** *** STAGE for Create Order *** ***', stage)
   const postPaymentUrl = normalizeStageContext(apiConfig.ordersUrl, stage)
+  console.log({ postPaymentUrl })
 
   return postPaymentUrl
 }
