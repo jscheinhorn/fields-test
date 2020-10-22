@@ -44,8 +44,8 @@ export async function postGetAuthToken(req, res) {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   })
-  console.log({ response })
-  return response
+  const json = await response.json()
+  res.send(json)
   //   resSendGenericResponse(res, response)
 }
 

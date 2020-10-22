@@ -153,21 +153,22 @@ IDEAL
           const authResponseJson = await authResponse.json()
           console.log({ authResponseJson })
           const accessToken = authResponseJson.access_token
+          console.log('accessToken: ' + accessToken)
 
-          return fetch(createOrderUrl, {
-            method: 'get',
-            headers: {
-              'content-type': 'application/json',
-              'access-token': accessToken,
-            },
-          })
-            .then(res => res.json())
-            .then(jsonData => console.log({ jsonData }))
+          // return fetch(createOrderUrl, {
+          //   method: 'get',
+          //   headers: {
+          //     'content-type': 'application/json',
+          //     'access-token': accessToken,
+          //   },
+          // })
+          //   .then(res => res.json())
+          //   .then(jsonData => console.log({ jsonData }))
         }
-        return actions.order.create(order).then(createdOrderReturn => {
-          console.log({ createdOrderReturn })
-          return createdOrderReturn
-        })
+        // return actions.order.create(order).then(createdOrderReturn => {
+        //   console.log({ createdOrderReturn })
+        //   return createdOrderReturn
+        // })
       },
 
       onApprove(data, actions) {
