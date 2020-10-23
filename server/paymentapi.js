@@ -10,6 +10,8 @@ export async function postGetAuthToken(req, res) {
   const { live, sandbox, 'client-id': clientId } = req.query
   const { stage } = req.body
   const authUrl = getAuthUrl({ live, sandbox, stage })
+
+  console.log(authUrl)
   const basicAuth = Buffer.from(clientId).toString('base64')
 
   // // ADDED TO USE SERVICECORE IN LIEU OF FETCH:
@@ -33,17 +35,23 @@ export async function postGetAuthToken(req, res) {
   // })
 
   // USING FETCH (CANNOT USE SERVICECORE ON HEROKU)
-  const response = await fetch(authUrl, {
-    method: 'POST',
-    body: 'grant_type=client_credentials',
-    headers: {
-      'Accept-Language': 'en_US',
-      Authorization: `Basic ${basicAuth}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-  })
-  const json = await response.json()
-  res.send(json)
+  try {
+    const response = await fetch(authUrl, {
+      method: 'POST',
+      body: 'grant_type=client_credentials',
+      headers: {
+        'Accept-Language': 'en_US',
+        Authorization: `Basic ${basicAuth}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+    const json = await response.json()
+    res.status(response.status).json(json)
+  } catch (err) {
+    console.error(err)
+    res.send(500)
+  }
+
   //   resSendGenericResponse(res, response)
 }
 

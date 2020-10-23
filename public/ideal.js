@@ -144,17 +144,24 @@ IDEAL
           let createPaymentUrl = '/api/createpayment?' + queryParams
 
           console.log({ envi })
-          const authResponse = await fetch(authUrl, {
-            method: 'post',
-            headers: {
-              'content-type': 'application/json',
-            },
-            body: JSON.stringify({ stage: envi }),
-          })
-          const authResponseJson = await authResponse.json()
-          console.log({ authResponseJson })
-          const accessToken = authResponseJson.access_token
-          console.log('accessToken: ' + accessToken)
+
+          let accessToken = 'undefined'
+
+          try {
+            const authResponse = await fetch(authUrl, {
+              method: 'post',
+              headers: {
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify({ stage: envi }),
+            })
+            const authResponseJson = await authResponse.json()
+            console.log({ authResponseJson })
+            accessToken = authResponseJson.access_token
+            console.log('accessToken: ' + accessToken)
+          } catch (error) {
+            console.error(error)
+          }
 
           return fetch(createPaymentUrl, {
             method: 'post',
