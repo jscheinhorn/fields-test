@@ -94,7 +94,7 @@ testEnvDropdown.onchange = function() {
 
 // Accept custom test environment (stage)
 otherTestEnv.addEventListener('input', function() {
-  sessionStorage.environment = 'te-alm-' + otherTestEnv.value
+  sessionStorage.environment = otherTestEnv.value
 })
 // Accept custom client id
 console.log('custom client id: ', sessionStorage.customId)
