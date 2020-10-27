@@ -6,6 +6,7 @@
     "start": "nodemon server/index.js --exec babel-node"
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "btoa": "^1.2.1",

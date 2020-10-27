@@ -1,5 +1,6 @@
 import { createOrderUrl, getAuthUrl } from './apiconfig'
 import fetch from 'node-fetch'
+import axios from 'axios'
 // import btoa from 'btoa'
 import https from 'https'
 import { access } from 'fs'
@@ -15,6 +16,7 @@ export async function postGetAuthToken(req, res) {
   const basicAuth = Buffer.from(clientId).toString('base64')
 
   // // ADDED TO USE SERVICECORE IN LIEU OF FETCH:
+  // (CANNOT USE SERVICECORE ON HEROKU)
   // const client = servicecore.create('identitysecuretokenserv', {
   //   transport: 'ppaas',
   // })
@@ -34,23 +36,49 @@ export async function postGetAuthToken(req, res) {
   //   body: 'grant_type=client_credentials',
   // })
 
-  // USING FETCH (CANNOT USE SERVICECORE ON HEROKU)
+  // USING AXIOS
+  const method = 'post'
+  const data = 'grant_type=client_credentials'
+  const url = authUrl
+  const headers = {
+    'Content-type': 'application/x-www-form-urlencoded',
+    Authorization: `Basic ${basicAuth}`,
+  }
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+  })
+
   try {
-    const response = await fetch(authUrl, {
-      method: 'POST',
-      body: 'grant_type=client_credentials',
-      headers: {
-        'Accept-Language': 'en_US',
-        Authorization: `Basic ${basicAuth}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+    const response = await axios({
+      method,
+      url,
+      data,
+      headers,
+      httpsAgent,
     })
-    const json = await response.json()
-    res.status(response.status).json(json)
+    res.status(response.status).json(response.data)
   } catch (err) {
     console.error(err)
     res.send(500)
   }
+
+  // USING FETCH
+  // try {
+  //   const response = await fetch(authUrl, {
+  //     method: 'POST',
+  //     body: 'grant_type=client_credentials',
+  //     headers: {
+  //       'Accept-Language': 'en_US',
+  //       Authorization: `Basic ${basicAuth}`,
+  //       'Content-Type': 'application/x-www-form-urlencoded',
+  //     },
+  //   })
+  //   const json = await response.json()
+  //   res.status(response.status).json(json)
+  // } catch (err) {
+  //   console.error(err)
+  //   res.send(500)
+  // }
 
   //   resSendGenericResponse(res, response)
 }
@@ -94,19 +122,45 @@ export async function createPaymentHandler(req, res) {
   //   returnUrl,
   //   cancelUrl,
   // })
-  // You Were about to go ahead and make sure the order, auth token, and stage are being sent down here
-  const response = await fetch(requestUrl, {
-    method: 'POST',
-    body: JSON.stringify(order),
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-  })
-  const json = await response.json()
-  console.log({ json })
-  res.send(json)
+
+  // // USING FETCH
+  // const response = await fetch(requestUrl, {
+  //   method: 'POST',
+  //   body: JSON.stringify(order),
+  //   headers: {
+  //     Authorization: `Bearer ${accessToken}`,
+  //     'Content-Type': 'application/json',
+  //   },
+  // })
+  // const json = await response.json()
+  // console.log({ json })
+  // res.send(json)
   // resSendResponse(res, response)
+
+  // USING AXIOS (createOrder)
+  const method = 'post'
+  const data = order
+  const url = requestUrl
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+    'Content-Type': 'application/json',
+  }
+  const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+  })
+  try {
+    const createOrderResponse = await axios({
+      method,
+      url,
+      data,
+      headers,
+      httpsAgent,
+    })
+    res.status(createOrderResponse.status).json(createOrderResponse.data)
+  } catch (err) {
+    console.error(err)
+    res.send(500)
+  }
 }
 
 // Helper Functions
@@ -124,6 +178,7 @@ export function resSendResponse(res, serviceResponse, mapFrom) {
   }
 }
 
+// TODO: MODIFY FOR AXIOS AND REFACTOR AUTH AND CREATEORDER FUNCTIONS
 export async function sendRequest({ method, url, headers, data, retries }) {
   const hastries = retries || 1
   try {
