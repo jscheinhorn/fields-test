@@ -146,7 +146,7 @@ IDEAL
           console.log({ envi })
 
           let accessToken = 'undefined'
-
+          console.log('Attempt with https agent')
           try {
             const authResponse = await fetch(authUrl, {
               method: 'post',

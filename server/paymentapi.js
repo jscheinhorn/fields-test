@@ -14,6 +14,13 @@ export async function postGetAuthToken(req, res) {
 
   console.log(authUrl)
   const basicAuth = Buffer.from(clientId).toString('base64')
+  const agentOptions = {
+    rejectUnauthorized: false,
+    host: '127.0.0.1',
+    port: '9000',
+    path: '/systemproxy-1603902803.pac',
+  }
+  const httpsAgent = new https.Agent(agentOptions)
 
   // // ADDED TO USE SERVICECORE IN LIEU OF FETCH:
   // (CANNOT USE SERVICECORE ON HEROKU)
@@ -36,7 +43,7 @@ export async function postGetAuthToken(req, res) {
   //   body: 'grant_type=client_credentials',
   // })
 
-  // USING AXIOS
+  // USING AXIOS (getAuthToken)
   const method = 'post'
   const data = 'grant_type=client_credentials'
   const url = authUrl
@@ -44,10 +51,6 @@ export async function postGetAuthToken(req, res) {
     'Content-type': 'application/x-www-form-urlencoded',
     Authorization: `Basic ${basicAuth}`,
   }
-  const httpsAgent = new https.Agent({
-    rejectUnauthorized: false,
-  })
-
   try {
     const response = await axios({
       method,
@@ -87,6 +90,13 @@ export async function postGetAuthToken(req, res) {
 export async function createPaymentHandler(req, res) {
   const { live, sandbox } = req.query
   const { order, stage, accessToken } = req.body
+  const agentOptions = {
+    rejectUnauthorized: false,
+    host: '127.0.0.1',
+    port: '9000',
+    path: '/systemproxy-1603902803.pac',
+  }
+  const httpsAgent = new https.Agent(agentOptions)
   // console.log({order, stage, accessToken})
   // const stage = queryParams.stage || 'msmaster'
   // const {
@@ -145,9 +155,7 @@ export async function createPaymentHandler(req, res) {
     Authorization: `Bearer ${accessToken}`,
     'Content-Type': 'application/json',
   }
-  const httpsAgent = new https.Agent({
-    rejectUnauthorized: false,
-  })
+
   try {
     const createOrderResponse = await axios({
       method,
