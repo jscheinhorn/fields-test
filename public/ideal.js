@@ -8,7 +8,7 @@ import configureSdk from './configureSdk.js'
 const src = configureSdk()
 let script = document.createElement('SCRIPT')
 script.src = src
-script.onload = idealRender
+script.onload = idealRender // TODO: Try importing this and providing APM as argument
 document.head.appendChild(script)
 
 const { preFill, serverSide } = sessionStorage
@@ -130,7 +130,6 @@ IDEAL
       },
 
       async createOrder(data, actions) {
-        console.log({ data, actions })
         let envi = sessionStorage.environment // want to specify for createPaymentUrl
         if (serverSide === 'true') {
           let [prefix, queryParams] = src.split('?')
@@ -142,11 +141,9 @@ IDEAL
           }
           let authUrl = '/api/getauthtoken?' + queryParams
           let createPaymentUrl = '/api/createpayment?' + queryParams
-
           console.log({ envi })
-
           let accessToken = 'undefined'
-          console.log('Attempt with https agent')
+
           try {
             const authResponse = await fetch(authUrl, {
               method: 'post',
@@ -171,9 +168,9 @@ IDEAL
             body: JSON.stringify({ stage: envi, order, accessToken }),
           })
             .then(res => res.json())
-            .then(jsonData => {
-              console.log({ jsonData })
-              return jsonData.id
+            .then(createOrderData => {
+              console.log({ createOrderData })
+              return createOrderData.id
             })
         }
         return actions.order.create(order).then(createdOrderReturn => {

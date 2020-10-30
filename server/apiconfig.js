@@ -10,10 +10,7 @@ export function getAuthUrl({ live, sandbox, stage }) {
 // create ordersUrl based on environment
 export function createOrderUrl({ live, sandbox, stage }) {
   const apiConfig = getApiConfig({ live, sandbox })
-  console.log('*** *** STAGE for Create Order *** ***', stage)
   const postPaymentUrl = normalizeStageContext(apiConfig.ordersUrl, stage)
-  console.log({ postPaymentUrl })
-
   return postPaymentUrl
 }
 
@@ -41,7 +38,7 @@ export function normalizeStageContext(context, stage) {
   return newContext
 }
 
-// Not currently using.
+// TODO: Not currently using. Delete if left unsused.
 //   export function getDefaultCred({ live, sandbox, thirdParty }) {
 //     const apiConfig = getApiConfig({ live, sandbox });
 //     const cred = Object.assign({}, apiConfig.cred);

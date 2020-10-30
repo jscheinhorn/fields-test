@@ -103,7 +103,19 @@ clientId.addEventListener('input', function() {
 })
 
 // Prevent navigation if no test environment selected
-document.getElementsByClassName('list-group')[0].onclick = function(event) {
+const listGroup = document.getElementsByClassName('list-group')[0]
+listGroup.onclick = function(event) {
+  const teServerSelected =
+    sessionStorage.environment[0] === 't' &&
+    sessionStorage.serverSide === 'true'
+  if (teServerSelected) {
+    event.preventDefault()
+    $('#warningModal').modal('show')
+    document.getElementById('redirect').onclick = function() {
+      window.location.href = event.target.href
+    }
+  }
+  console.log({ teServerSelected })
   if (
     sessionStorage.environment === 'stage' ||
     sessionStorage.environment === 'other' ||
