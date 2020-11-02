@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-// Prevent 'enter' from clearing the form
+// Prevent 'enter' from clearing forms
 document.querySelector('form').addEventListener('submit', function(event) {
   event.preventDefault()
 })

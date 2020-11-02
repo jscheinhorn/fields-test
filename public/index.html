@@ -23,29 +23,36 @@
         <p class="header">
           Merchant Options
         </p>
-        <div class="form" style="padding-left:30px">
+        <div class="form">
           <!-- autocomplete off to reset dropdown options on back button -->
           <form action="/" autocomplete="off">
-            <input
-              id="pre-fill"
-              type="checkbox"
-              name="pre-fill"
-              value="pre-fill-true"
-              autocomplete="on"
-            />
-            <label for="pre-fill"> Pre-fill buyer information</label>
-            <br />
-            <input
-              id="server-side"
-              type="checkbox"
-              name="server-side"
-              value="server-side-true"
-              autocomplete="on"
-            />
-            <label for="server-side"> Use server-side integration</label>
-            <br />
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                id="pre-fill"
+                type="checkbox"
+                name="pre-fill"
+                value="pre-fill-true"
+                autocomplete="on"
+              />
+              <label class="form-check-label" for="pre-fill">
+                Pre-fill buyer information</label
+              >
+              <br />
+              <input
+                class="form-check-input"
+                id="server-side"
+                type="checkbox"
+                name="server-side"
+                value="server-side-true"
+                autocomplete="on"
+              />
+              <label class="form-check-label" for="server-side">
+                Use server-side integration</label
+              >
+            </div>
             <label id="envLabel" for="environment"> Environment: </label>
-            <select name="environment" id="environment">
+            <select class="custom-select" name="environment" id="environment">
               <option value="" selected="selected">Select environment</option>
               <option value="sandbox">Sandbox</option>
               <option value="msmaster">msmaster</option>
@@ -57,7 +64,7 @@
             </p>
             <div id="test-env-div" style="display:none">
               <label for="test-env"> Test Environment: </label>
-              <select name="test-env" id="test-env">
+              <select class="custom-select" name="test-env" id="test-env">
                 <option value="" selected
                   >Please select a test environment</option
                 >
@@ -74,7 +81,7 @@
               <input id="other-test-env" name="other-test-env" />
               <label for="other-test-env">.qa.paypal.com</label>
             </div>
-            <br />
+            <!-- <br /> -->
             <label for="pre-fill"> Client ID: </label>
             <input
               id="client-id"
@@ -85,125 +92,131 @@
           </form>
         </div>
       </div>
-      <!-- MODAL -->
-      <div
-        class="modal fade"
-        id="warningModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="warningModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="warningModalLabel">Warning</h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              Server-side implementation will not work with test environments on
-              Heroku
-            </div>
-            <div class="modal-footer">
-              <button type="button" id="redirect" class="btn btn-primary">
-                Continue
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- MODAL END -->
+      <!-- ALTERNATE PAYMENTS -->
       <div class="container" style="width:30%;padding:10px">
-        <div class="list-group">
-          <a href="/ideal.html" class="list-group-item list-group-item-action">
-            <img
-              src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_iDEAL.svg"
-            />
-            Ideal
-          </a>
-          <a href="/eps.html" class="list-group-item list-group-item-action">
-            <img
-              src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_eps.svg"
-            />
-            Eps</a
-          >
-
-          <a href="/blik.html" class="list-group-item list-group-item-action">
-            <img
-              src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_blik.svg"
-            />
-            Blik</a
-          >
-          <a
-            href="/bancontact.html"
-            class="list-group-item list-group-item-action"
-            ><img
-              src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_bancontact.svg"
-            />
-            Bancontact</a
-          >
-          <a
-            href="/giropay.html"
-            class="list-group-item list-group-item-action"
-          >
-            <img
-              src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_giropay.svg"
-            />
-            Giropay</a
-          >
-
-          <a href="/mybank.html" class="list-group-item list-group-item-action"
-            ><img
-              src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_mybank.svg"
-              class="css-1bsffhg-Logo e3njp081"
-            />
-            MyBank</a
-          >
-
-          <a href="/p24.html" class="list-group-item list-group-item-action">
-            <img
-              src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_p24.svg"
-              class="css-1bsffhg-Logo e3njp081"
-            />
-            P24</a
-          >
-
-          <a
-            href="/trustly.html"
-            class="list-group-item list-group-item-action"
-          >
-            <img
-              src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_trustly.svg"
-            />
-            Trustly</a
-          >
-
-          <a
-            href="/verkkopankki.html"
-            class="list-group-item list-group-item-action"
-          >
-            <img
-              src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_verkkopankki.svg"
-            />
-            Verkkopankki</a
-          >
-          <a href="/sofort.html" class="list-group-item list-group-item-action">
-            <img
-              src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_sofort.svg"
-            />
-            Sofort</a
-          >
+        <p class="header">
+          Alternate Payment Options
+        </p>
+        <div class="form">
+          <form>
+            <div class="form-check apm">
+              <input class="form-check-input" type="checkbox" id="ideal" />
+              <img
+                src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_iDEAL.svg"
+              />
+              <label class="form-check-label" for="ideal">iDeal</label>
+            </div>
+            <div class="form-check apm">
+              <input class="form-check-input" type="checkbox" id="eps" />
+              <img
+                src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_eps.svg"
+              />
+              <label class="form-check-label" for="eps">Eps</label>
+            </div>
+            <div class="form-check apm">
+              <input class="form-check-input" type="checkbox" id="blik" />
+              <img
+                src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_blik.svg"
+              />
+              <label class="form-check-label" for="blik">Blik</label>
+            </div>
+            <div class="form-check apm">
+              <input class="form-check-input" type="checkbox" id="bancontact" />
+              <img
+                src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_bancontact.svg"
+              />
+              <label class="form-check-label" for="bancontact"
+                >Bancontact</label
+              >
+            </div>
+            <div class="form-check apm">
+              <input class="form-check-input" type="checkbox" id="giropay" />
+              <img
+                src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_giropay.svg"
+              />
+              <label class="form-check-label" for="giropay">Giropay</label>
+            </div>
+            <div class="form-check apm">
+              <input class="form-check-input" type="checkbox" id="mybank" />
+              <img
+                src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_mybank.svg"
+              />
+              <label class="form-check-label" for="mybank">MyBank</label>
+            </div>
+            <div class="form-check apm">
+              <input class="form-check-input" type="checkbox" id="p24" />
+              <img
+                src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_p24.svg"
+              />
+              <label class="form-check-label" for="p24">P24</label>
+            </div>
+            <div class="form-check apm">
+              <input class="form-check-input" type="checkbox" id="trustly" />
+              <img
+                src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_trustly.svg"
+              />
+              <label class="form-check-label" for="trustly">Trustly</label>
+            </div>
+            <div class="form-check apm">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="verkkopankki"
+              />
+              <img
+                src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_verkkopankki.svg"
+              />
+              <label class="form-check-label" for="verkkopankki"
+                >Verkkopankki</label
+              >
+            </div>
+            <div class="form-check apm">
+              <input class="form-check-input" type="checkbox" id="sofort" />
+              <img
+                src="https://www.paypalobjects.com/images/checkout/latinum/Altpay_logo_sofort.svg"
+              />
+              <label class="form-check-label" for="sofort">Sofort</label>
+            </div>
+          </form>
         </div>
       </div>
       <script src="index.js"></script>
     </div>
+    <!-- MODAL -->
+    <div
+      class="modal fade"
+      id="warningModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="warningModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="warningModalLabel">Warning</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Server-side implementation will not work with test environments on
+            Heroku
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="redirect" class="btn btn-primary">
+              Continue
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SCRIPTS -->
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
