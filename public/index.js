@@ -65,15 +65,12 @@ serverSideCheck.onclick = () => {
 // Prevent navigation if no test environment selected
 const form = document.getElementById('form')
 form.onsubmit = function(event) {
-  // event.preventDefault();
   const selectElements = document.getElementsByTagName('select')
   const env = selectElements[0].value
   const testEnv = selectElements[1].value
-  const teServerSelected = serverSideCheck.checked && env === 'stage'
-  console.log('pre-fill checked: ', document.getElementById('pre-fill').checked)
-  console.log({ teServerSelected, env })
+  console.log({ env, testEnv })
   if (
-    !env ||
+    env === '0' ||
     (env === 'stage' && testEnv === '0') ||
     (testEnv === 'other' && otherTestEnv.value === '')
   ) {
