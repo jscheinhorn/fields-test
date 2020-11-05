@@ -10,6 +10,8 @@ const testEnvDropdown = document.getElementById('test-env')
 const otherTestEnv = document.getElementById('other-test-env')
 const clientId = document.getElementById('client-id')
 const serverSideCheck = document.getElementById('server-side')
+const testEnvDiv = document.getElementById('test-env-div')
+const otherTestEnvDiv = document.getElementById('other-test-env-div')
 const sandboxDefaultId =
   'AWpNai5MkBQDlnUmeYU02YHGOEkUs-ib8ufPtamRXZ_Uc8BuRJ6gCcaBZ-IVKBCBDtuw_7JRmbmdbERa'
 const otherDefaultId =
@@ -28,13 +30,13 @@ envDropdown.onchange = function() {
     clientId.value = otherDefaultId
   }
   if (envSelection === 'stage') {
-    document.getElementById('test-env-div').style.display = 'block'
+    testEnvDiv.style.display = 'block'
     if (serverSideCheck.checked) {
       $('#warningModal').modal('show')
     }
   } else {
-    document.getElementById('test-env-div').style.display = 'none'
-    document.getElementById('other-test-env-div').style.display = 'none'
+    testEnvDiv.style.display = 'none'
+    otherTestEnvDiv.style.display = 'none'
   }
 }
 
@@ -47,11 +49,10 @@ testEnvDropdown.onchange = function() {
   const testEnvSelection =
     testEnvDropdown.options[testEnvDropdown.selectedIndex].value
   console.log({ testEnvSelection })
-  sessionStorage.environment = testEnvSelection
   if (testEnvSelection === 'other') {
-    document.getElementById('other-test-env-div').style.display = 'block'
+    otherTestEnvDiv.style.display = 'block'
   } else {
-    document.getElementById('other-test-env-div').style.display = 'none'
+    otherTestEnvDiv.style.display = 'none'
   }
 }
 
@@ -59,6 +60,15 @@ testEnvDropdown.onchange = function() {
 serverSideCheck.onclick = () => {
   if (serverSideCheck.checked && envDropdown.value === 'stage') {
     $('#warningModal').modal('show')
+  }
+}
+
+// Select all APMs
+let allClicked = false
+document.getElementById('all').onclick = () => {
+  allClicked = !allClicked
+  for (let element of document.getElementsByClassName('apm')) {
+    element.children[0].checked = allClicked
   }
 }
 

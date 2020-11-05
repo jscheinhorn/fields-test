@@ -1,21 +1,25 @@
 /* eslint-disable promise/always-return */
 /* eslint-disable consistent-return, new-cap, no-alert, no-console */
 import configureSdk from './configureSdk.js'
+import apmRender from './apmRender.js'
 // import * as swal from 'sweetalert' // This will be for the popup after onApprove,
 // sweetalert has an issue with typescript (needs Swal type specified) and needs:
 // npm install --save @types/sweetalert
 
-const src = configureSdk() // Returns the JS PP SDK script
-let script = document.createElement('SCRIPT')
-script.src = src
-script.onload = idealRender // TODO: Try importing this and providing APM as argument
-document.head.appendChild(script)
-
 const urlParams = new URLSearchParams(window.location.search)
-for (let keyValuePair of urlParams) {
-  console.log({ keyValuePair })
+const clientId = urlParams.get('client-id')
+let environment = urlParams.get('environment')
+const testEnv = urlParams.get('test-env')
+const otherTe = urlParams.get('other-test-env')
+console.log({ environment, testEnv, otherTe })
+if (environment === 'stage') {
+  if (testEnv === 'other') {
+    environment = otherTe
+  } else {
+    environment = testEnv
+  }
 }
-console.log('environment: ', urlParams.get('environment'))
+console.log({ environment })
 
 let name = ''
 if (urlParams.get('pre-fill') === '1') {
@@ -65,223 +69,257 @@ const order = {
   },
 }
 
-function idealRender() {
-  console.log('PayPal SDK version:', paypal.version)
-
-  /* -----
-PAYPAL
------- */
-  paypal
-    .Marks({
-      fundingSource: paypal.FUNDING.PAYPAL,
-    })
-    .render('#paypal-mark')
-
-  paypal
-    .Buttons({
-      fundingSource: paypal.FUNDING.PAYPAL,
-
-      style: {
-        label: 'pay',
-      },
-
-      createOrder(data, actions) {
-        return actions.order.create(order)
-      },
-
-      onApprove(data, actions) {
-        return actions.order.capture().then(function(details) {
-          console.log({ details })
-          alert(`Transaction completed by ${details.payer.name.given_name}!`)
-        })
-      },
-    })
-    .render('#paypal-btn')
-
-  /* -----
-IDEAL
------- */
-  paypal
-    .Marks({
-      fundingSource: paypal.FUNDING.IDEAL,
-    })
-    .render('#ideal-mark')
-
-  paypal
-    .Fields({
-      fundingSource: paypal.FUNDING.IDEAL,
-      style,
-      fields: {
-        name: {
-          value: name,
-          hidden: false,
-        },
-        email: {
-          value: name,
-          hidden: false,
-        },
-      },
-    })
-    .render('#ideal-container')
-
-  paypal
-    .Buttons({
-      fundingSource: paypal.FUNDING.IDEAL,
-
-      style: {
-        label: 'pay',
-      },
-
-      async createOrder(data, actions) {
-        let envi = urlParams.get('environment') // want to specify for createPaymentUrl
-        if (urlParams.get('pre-fill') === '1') {
-          let [prefix, queryParams] = src.split('?')
-          console.log({ queryParams })
-          if (envi === 'sandbox') {
-            queryParams += '&sandbox=1'
-          } else if (envi === 'live') {
-            queryParams += '&live=1'
-          }
-          let authUrl = '/api/getauthtoken?' + queryParams
-          let createPaymentUrl = '/api/createpayment?' + queryParams
-          console.log({ envi })
-          let accessToken = 'undefined'
-
-          try {
-            const authResponse = await fetch(authUrl, {
-              method: 'post',
-              headers: {
-                'content-type': 'application/json',
-              },
-              body: JSON.stringify({ stage: envi }),
-            })
-            const authResponseJson = await authResponse.json()
-            console.log({ authResponseJson })
-            accessToken = authResponseJson.access_token
-            console.log('accessToken: ' + accessToken)
-          } catch (error) {
-            console.error(error)
-          }
-
-          return fetch(createPaymentUrl, {
-            method: 'post',
-            headers: {
-              'content-type': 'application/json',
-            },
-            body: JSON.stringify({ stage: envi, order, accessToken }),
-          })
-            .then(res => res.json())
-            .then(createOrderData => {
-              console.log({ createOrderData })
-              return createOrderData.id
-            })
-        }
-        return actions.order.create(order).then(createdOrderReturn => {
-          console.log({ createdOrderReturn })
-          return createdOrderReturn
-        })
-      },
-
-      onApprove(data, actions) {
-        // Currently not being called. Aditya is working on it.
-        console.log({ data, actions })
-        return actions.order.capture().then(capturedata => {
-          const capturedataString = JSON.stringify(capturedata, null, 2)
-          console.log(capturedataString)
-          alert(capturedataString)
-        })
-      },
-    })
-    .render('#ideal-btn')
-
-  /* -----
-SOFORT
------- */
-  paypal
-    .Marks({
-      fundingSource: paypal.FUNDING.SOFORT,
-    })
-    .render('#sofort-mark')
-
-  paypal
-    .Fields({
-      fundingSource: paypal.FUNDING.SOFORT,
-      style,
-      fields: {
-        name: {
-          value: name,
-          hidden: false,
-        },
-      },
-    })
-    .render('#sofort-container')
-
-  paypal
-    .Buttons({
-      fundingSource: paypal.FUNDING.SOFORT,
-
-      style: {
-        label: 'pay',
-      },
-
-      createOrder(data, actions) {
-        return actions.order.create(order)
-      },
-
-      onApprove(data, actions) {
-        return actions.order.capture().then(function(details) {
-          alert(`Transaction completed by ${details.payer.name.given_name}!`)
-        })
-      },
-    })
-    .render('#sofort-btn')
+let apm = {
+  ideal: 0,
+  eps: 0,
+  blik: 0,
+  bancontact: 0,
+  giropay: 0,
+  mybank: 0,
+  p24: 0,
+  trustly: 0,
+  verkkopankki: 0,
+  sofort: 0,
 }
+for (let keyValuePair of urlParams) {
+  if (keyValuePair[0] in apm) {
+    apm[keyValuePair[0]] = 1
+  }
+}
+console.log({ apm })
 
-/* -----
-RADIO BUTTONS
------- */
-// Listen for changes to the radio buttons
-document.querySelectorAll('input[name=payment-option]').forEach(el => {
-  // handle button toggles
-  el.addEventListener('change', event => {
-    switch (event.target.value) {
-      case 'paypal':
-        document.body.querySelector('#ideal-container').style.display = 'none'
-        document.getElementById('ideal-btn').style.display = 'none'
+const src = configureSdk(clientId, environment)
+let script = document.createElement('SCRIPT')
+script.src = src
+// script.onload = idealRender // TODO: Try importing this and providing APM as argument
+script.onload = function() {
+  apmRender(apm, style, order)
+}
+document.head.appendChild(script)
 
-        document.body.querySelector('#sofort-container').style.display = 'none'
-        document.body.querySelector('#paypal-btn').style.display = 'block'
+// function idealRender() {
+//   console.log('PayPal SDK version:', paypal.version)
 
-        document.getElementById('sofort-btn').style.display = 'none'
+//   /* -----
+// PAYPAL
+// ------ */
+//   paypal
+//     .Marks({
+//       fundingSource: paypal.FUNDING.PAYPAL,
+//     })
+//     .render('#paypal-mark')
 
-        break
-      case 'ideal':
-        document.body.querySelector('#ideal-container').style.display = 'block'
-        document.getElementById('ideal-btn').style.display = 'block'
+//   paypal
+//     .Buttons({
+//       fundingSource: paypal.FUNDING.PAYPAL,
 
-        document.body.querySelector('#sofort-container').style.display = 'none'
-        document.body.querySelector('#paypal-btn').style.display = 'none'
+//       style: {
+//         label: 'pay',
+//       },
 
-        document.getElementById('sofort-btn').style.display = 'none'
-        break
+//       createOrder(data, actions) {
+//         return actions.order.create(order)
+//       },
 
-      case 'sofort':
-        document.body.querySelector('#ideal-container').style.display = 'none'
-        document.getElementById('ideal-btn').style.display = 'none'
+//       onApprove(data, actions) {
+//         return actions.order.capture().then(function(details) {
+//           console.log({ details })
+//           alert(`Transaction completed by ${details.payer.name.given_name}!`)
+//         })
+//       },
+//     })
+//     .render('#paypal-btn')
 
-        document.body.querySelector('#paypal-btn').style.display = 'none'
+//   /* -----
+// IDEAL
+// ------ */
+// // TODO: FOR EACH MARK, FIELD, and BUTTON
+// // dynamically make each APM container with its id
+//   paypal
+//     .Marks({
+//       fundingSource: paypal.FUNDING.IDEAL,
+//     })
+//     .render('#ideal-mark')
+//     // TODO: dynamically make each APM container with its id
 
-        document.body.querySelector('#sofort-container').style.display = 'block'
-        document.getElementById('sofort-btn').style.display = 'block'
-        break
-      default:
-        break
-    }
-  })
-})
+//   paypal
+//     .Fields({
+//       fundingSource: paypal.FUNDING.IDEAL,
+//       style,
+//       fields: {
+//         name: {
+//           value: name,
+//           hidden: false,
+//         },
+//         email: {
+//           value: name,
+//           hidden: false,
+//         },
+//       },
+//     })
+//     .render('#ideal-container')
+//     // TODO: dynamically make each APM container with its id
 
-document.body.querySelector('#ideal-container').style.display = 'none'
-document.getElementById('ideal-btn').style.display = 'none'
+//   paypal
+//     .Buttons({
+//       fundingSource: paypal.FUNDING.IDEAL,
 
-document.body.querySelector('#sofort-container').style.display = 'none'
-document.getElementById('sofort-btn').style.display = 'none'
+//       style: {
+//         label: 'pay',
+//       },
+
+//       async createOrder(data, actions) {
+//         // TODO: ensure createPaymentUrl still working with changes
+//         // let environment= urlParams.get('environment')
+//         if (urlParams.get('pre-fill') === '1') {
+//           let [prefix, queryParams] = src.split('?')
+//           console.log({ queryParams })
+//           if (environment=== 'sandbox') {
+//             queryParams += '&sandbox=1'
+//           } else if (environment=== 'live') {
+//             queryParams += '&live=1'
+//           }
+//           let authUrl = '/api/getauthtoken?' + queryParams
+//           let createPaymentUrl = '/api/createpayment?' + queryParams
+//           console.log({ environment})
+//           let accessToken = 'undefined'
+
+//           try {
+//             const authResponse = await fetch(authUrl, {
+//               method: 'post',
+//               headers: {
+//                 'content-type': 'application/json',
+//               },
+//               body: JSON.stringify({ stage: environment}),
+//             })
+//             const authResponseJson = await authResponse.json()
+//             console.log({ authResponseJson })
+//             accessToken = authResponseJson.access_token
+//             console.log('accessToken: ' + accessToken)
+//           } catch (error) {
+//             console.error(error)
+//           }
+
+//           return fetch(createPaymentUrl, {
+//             method: 'post',
+//             headers: {
+//               'content-type': 'application/json',
+//             },
+//             body: JSON.stringify({ stage: envi, order, accessToken }),
+//           })
+//             .then(res => res.json())
+//             .then(createOrderData => {
+//               console.log({ createOrderData })
+//               return createOrderData.id
+//             })
+//         }
+//         return actions.order.create(order).then(createdOrderReturn => {
+//           console.log({ createdOrderReturn })
+//           return createdOrderReturn
+//         })
+//       },
+
+//       onApprove(data, actions) {
+//         // Currently not being called. Aditya is working on it.
+//         console.log({ data, actions })
+//         return actions.order.capture().then(capturedata => {
+//           const capturedataString = JSON.stringify(capturedata, null, 2)
+//           console.log(capturedataString)
+//           alert(capturedataString)
+//         })
+//       },
+//     })
+//     .render('#ideal-btn')
+//     // TODO: dynamically make each APM container with its id
+
+//   /* -----
+// SOFORT
+// ------ */
+//   paypal
+//     .Marks({
+//       fundingSource: paypal.FUNDING.SOFORT,
+//     })
+//     .render('#sofort-mark')
+
+//   paypal
+//     .Fields({
+//       fundingSource: paypal.FUNDING.SOFORT,
+//       style,
+//       fields: {
+//         name: {
+//           value: name,
+//           hidden: false,
+//         },
+//       },
+//     })
+//     .render('#sofort-container')
+
+//   paypal
+//     .Buttons({
+//       fundingSource: paypal.FUNDING.SOFORT,
+
+//       style: {
+//         label: 'pay',
+//       },
+
+//       createOrder(data, actions) {
+//         return actions.order.create(order)
+//       },
+
+//       onApprove(data, actions) {
+//         return actions.order.capture().then(function(details) {
+//           alert(`Transaction completed by ${details.payer.name.given_name}!`)
+//         })
+//       },
+//     })
+//     .render('#sofort-btn')
+// }
+
+// /* -----
+// RADIO BUTTONS
+// ------ */
+// // Listen for changes to the radio buttons
+// document.querySelectorAll('input[name=payment-option]').forEach(el => {
+//   // handle button toggles
+//   el.addEventListener('change', event => {
+//     switch (event.target.value) {
+//       case 'paypal':
+//         document.body.querySelector('#ideal-container').style.display = 'none'
+//         document.getElementById('ideal-btn').style.display = 'none'
+
+//         document.body.querySelector('#sofort-container').style.display = 'none'
+//         document.body.querySelector('#paypal-btn').style.display = 'block'
+
+//         document.getElementById('sofort-btn').style.display = 'none'
+
+//         break
+//       case 'ideal':
+//         document.body.querySelector('#ideal-container').style.display = 'block'
+//         document.getElementById('ideal-btn').style.display = 'block'
+
+//         document.body.querySelector('#sofort-container').style.display = 'none'
+//         document.body.querySelector('#paypal-btn').style.display = 'none'
+
+//         document.getElementById('sofort-btn').style.display = 'none'
+//         break
+
+//       case 'sofort':
+//         document.body.querySelector('#ideal-container').style.display = 'none'
+//         document.getElementById('ideal-btn').style.display = 'none'
+
+//         document.body.querySelector('#paypal-btn').style.display = 'none'
+
+//         document.body.querySelector('#sofort-container').style.display = 'block'
+//         document.getElementById('sofort-btn').style.display = 'block'
+//         break
+//       default:
+//         break
+//     }
+//   })
+// })
+
+// document.body.querySelector('#ideal-container').style.display = 'none'
+// document.getElementById('ideal-btn').style.display = 'none'
+
+// document.body.querySelector('#sofort-container').style.display = 'none'
+// document.getElementById('sofort-btn').style.display = 'none'

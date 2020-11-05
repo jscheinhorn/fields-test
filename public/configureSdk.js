@@ -1,5 +1,4 @@
-export default function configureSdk() {
-  let clientId
+export default function configureSdk(clientId, environment) {
   let src = 'https://www.'
   const params =
     '&components=buttons,fields,marks&buyer-country=NL&currency=EUR'
@@ -9,24 +8,16 @@ export default function configureSdk() {
     testEnv: '.qa.paypal.com/sdk/js?',
   }
 
-  switch (sessionStorage.environment) {
+  switch (environment) {
     case 'sandbox':
       src += payPalSdk.sandbox
-      clientId = sessionStorage.customId
-        ? sessionStorage.customId
-        : sessionStorage.sandboxDefaultId
       break
     case 'msmaster':
       src += payPalSdk.msmaster
-      clientId = sessionStorage.customId
-        ? sessionStorage.customId
-        : sessionStorage.otherDefaultId
       break
     default:
-      src += sessionStorage.environment + payPalSdk.testEnv
-      clientId = sessionStorage.customId
-        ? sessionStorage.customId
-        : sessionStorage.otherDefaultId
+      // TODO: environment here will be test-env
+      src += environment + payPalSdk.testEnv
   }
   src += `client-id=${clientId}` + params
   console.log({ clientId })

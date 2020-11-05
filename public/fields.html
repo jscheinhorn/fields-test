@@ -10,44 +10,51 @@
     <h3>Enter payment method</h3>
     <br />
 
-    <label>
-      <input
-        type="radio"
-        name="payment-option"
-        value="paypal"
-        id="paypal-radio"
-        checked
-      />
-      <span id="paypal-mark"></span>
-    </label>
+    <div id="apm-radios">
+      <label>
+        <input
+          type="radio"
+          name="payment-option"
+          value="paypal"
+          id="paypal-radio"
+          class="apm-radio"
+          checked
+        />
+        <span id="paypal-mark" class="apm-mark"></span>
+      </label>
+    </div>
 
-    <label>
+    <!-- <label>
       <input
         id="ideal-radio"
+        class="apm-radio"
         value="ideal"
         name="payment-option"
         type="radio"
       />
-      <span id="ideal-mark"></span>
-    </label>
+      <span id="ideal-mark" class="apm-mark"></span>
+    </label> -->
 
-    <div id="ideal-container"></div>
+    <!-- <div id="ideal-container" class="apm-container"></div> -->
 
     <!-- <label>
       <input
         id="sofort-radio"
+        class="apm-radio"
         value="sofort"
         name="payment-option"
         type="radio"
       />
-      <span id="sofort-mark"></span>
-    </label>
+      <span id="sofort-mark" class="apm-mark"></span>
+    </label> -->
 
-    <div id="sofort-container"></div> -->
+    <!-- <div id="sofort-container" class="apm-container"></div> -->
 
-    <div id="paypal-btn"></div>
-    <!-- <div id="ideal-btn"></div>
-    <div id="sofort-btn"></div> -->
+    <div id="buttons">
+      <div id="paypal-btn" class="apm-btn"></div>
+      <!-- <div id="ideal-btn" class="apm-btn"></div>
+      <div id="sofort-btn" class="apm-btn"></div> -->
+    </div>
 
     <script type="module" src="/fields.js"></script>
   </body>

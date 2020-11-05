@@ -15,32 +15,6 @@ h6 {
   line-height: 1.2;
 }
 
-label {
-  display: inline-block;
-  width: 100%;
-}
-
-#paypal-radio {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-#apm-mark {
-  display: inline-block;
-  vertical-align: middle;
-  cursor: pointer;
-}
-
-#paypal-mark {
-  display: inline-block;
-  vertical-align: middle;
-  cursor: pointer;
-}
-
-#paypal-fields {
-  margin: 20px 0;
-}
-
 body {
   max-width: 35em;
   margin: 0 auto;
@@ -49,17 +23,34 @@ body {
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-#apm-container {
+label {
+  display: inline-block;
+  width: 100%;
+}
+
+.apm-radio {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.apm-mark {
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.paypal-fields {
+  margin: 20px 0;
+}
+
+.apm-container {
   padding-top: 1rem;
   padding-left: 27px;
   padding-right: 27px;
 }
 
-#apm-btn {
-  margin-left: 30px;
-  margin-right: 30px;
-}
-#paypal-btn {
+.apm-btn {
+  margin-top: 1rem;
   margin-top: 1rem;
   margin-left: 30px;
   margin-right: 30px;
