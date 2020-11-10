@@ -18,13 +18,7 @@
     <div class="ppstyle" style="flex-direction:column;">
       Drop-In UI Merchant Demo
     </div>
-    <form
-      id="form"
-      class="needs-validation"
-      action="fields.html"
-      autocomplete="off"
-      novalidate
-    >
+    <form id="form" class="needs-validation" action="fields.html">
       <div class="row" style="display:flex; justify-content:center;">
         <div class="col"></div>
         <!-- MERCHANT OPTIONS -->
@@ -40,7 +34,6 @@
                 type="checkbox"
                 name="pre-fill"
                 value="1"
-                required
               />
               <label class="form-check-label" for="pre-fill">
                 Pre-fill buyer information</label
@@ -86,12 +79,35 @@
               </select>
             </div>
             <div id="other-test-env-div" style="display:none;">
-              <input id="other-test-env" name="other-test-env" required />
+              <input id="other-test-env" name="other-test-env" />
               <label for="other-test-env">.qa.paypal.com</label>
             </div>
             <div>
               <label for="pre-fill"> Client ID: </label>
               <input id="client-id" name="client-id" required />
+            </div>
+            <div>
+              <label for="country"> Country: </label>
+              <select class="custom-select" name="country" id="country">
+                <option value="AT">AT</option>
+                <option value="BE">BE</option>
+                <option value="DE">DE</option>
+                <option value="DK">DK</option>
+                <option value="EE">EE</option>
+                <option value="ES">ES</option>
+                <option value="FI">FI</option>
+                <option value="GR">GR</option>
+                <option value="IT">IT</option>
+                <option value="NL">NL</option>
+                <option value="NO">NO</option>
+                <option value="PL">PL</option>
+                <option value="SE">SE</option>
+                <option value="UK">UK</option>
+              </select>
+            </div>
+            <div>
+              <label for="amount"> Amount: </label>
+              <input id="amount" name="amount" value="54.44" required />
             </div>
           </div>
         </div>

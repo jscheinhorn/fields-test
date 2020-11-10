@@ -1,8 +1,4 @@
 /* eslint-disable eqeqeq */
-// Prevent 'enter' from clearing forms
-// document.querySelector('form').addEventListener('submit', function(event) {
-//   event.preventDefault()
-// })
 
 // Constants
 const envDropdown = document.getElementById('environment')
@@ -15,13 +11,10 @@ const otherTestEnvDiv = document.getElementById('other-test-env-div')
 const sandboxDefaultId =
   'AWpNai5MkBQDlnUmeYU02YHGOEkUs-ib8ufPtamRXZ_Uc8BuRJ6gCcaBZ-IVKBCBDtuw_7JRmbmdbERa'
 const otherDefaultId =
-  'AVVSS5kWC3KEdory_C7uev8yYIZyemM4BQC9tt-koQDL5iRgjTAkpypPaE29mEGy1eRFCAEOjGYWN1TC'
+  'AZCjUMsPNzueEuqm2URngrs3LmVxfMQlFD2w3H3BNdo8f4g1Nbg0DEio_WrEpCBis7KPtw2l8OLVRiTS'
 
 // Envrionment dropdown options
 envDropdown.onchange = function() {
-  if (document.getElementById('currentEnv')) {
-    document.getElementById('currentEnv').remove()
-  }
   document.getElementById('warning').style.display = 'none'
   const envSelection = envDropdown.options[envDropdown.selectedIndex].value
   if (envSelection === 'sandbox') {
@@ -42,9 +35,6 @@ envDropdown.onchange = function() {
 
 // Test environment dropdown options
 testEnvDropdown.onchange = function() {
-  if (document.getElementById('currentEnv')) {
-    document.getElementById('currentEnv').remove()
-  }
   document.getElementById('warning').style.display = 'none'
   const testEnvSelection =
     testEnvDropdown.options[testEnvDropdown.selectedIndex].value
@@ -89,19 +79,3 @@ form.onsubmit = function(event) {
   }
   // TODO: ALSO DO NOT GO WITHOUT AT LEAST ONE APM SELECTED
 }
-
-// Display current environment
-// TODO: Either update or eliminate
-// console.log('environment: ', sessionStorage.environment)
-// if (typeof sessionStorage.environment !== 'undefined') {
-//   let currenEnv = document.createElement('STRONG')
-//   currenEnv.setAttribute('id', 'currentEnv')
-//   const envi = sessionStorage.environment
-//     ? sessionStorage.environment
-//     : 'not selected'
-//   let textnode = document.createTextNode(`The current environment is ${envi}`)
-//   let brk = document.createElement('BR')
-//   currenEnv.append(textnode, brk) // Append the text to <strong>
-//   const envLabel = document.getElementById('envLabel')
-//   envLabel.before(currenEnv)
-// }
