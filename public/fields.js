@@ -71,6 +71,12 @@ if (urlParams.get('amount')) {
   console.log('order amount: ', order.purchase_units[0].amount.value)
 }
 
+let currency = urlParams.get('currency') ? urlParams.get('currency') : 'EUR'
+if (currency) {
+  order.purchase_units[0].amount.currency_code = currency
+  console.log('currency code: ', order.purchase_units[0].amount.currency_code)
+}
+
 const buyerCountry = urlParams.get('country')
 
 let apm = {
@@ -82,7 +88,6 @@ let apm = {
   mybank: 0,
   p24: 0,
   trustly: 0,
-  verkkopankki: 0,
   sofort: 0,
 }
 for (let keyValuePair of urlParams) {
@@ -92,10 +97,10 @@ for (let keyValuePair of urlParams) {
 }
 console.log({ apm })
 
-const src = configureSdk(clientId, environment, apm, buyerCountry)
+const src = configureSdk(clientId, environment, apm, buyerCountry, currency)
 let script = document.createElement('SCRIPT')
 script.src = src
 script.onload = function() {
-  apmRender(apm, style, order, urlParams, environment)
+  apmRender(apm, style, order, urlParams, environment, name)
 }
 document.head.appendChild(script)

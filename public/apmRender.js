@@ -2,7 +2,14 @@
 /* eslint-disable max-statements */
 /* eslint-disable promise/always-return */
 /* eslint-disable consistent-return, new-cap, no-alert, no-console */
-export default function apmRender(apm, style, order, urlParams, environment) {
+export default function apmRender(
+  apm,
+  style,
+  order,
+  urlParams,
+  environment,
+  name,
+) {
   console.log('PayPal SDK version:', paypal.version)
 
   /* -----
@@ -102,8 +109,7 @@ export default function apmRender(apm, style, order, urlParams, environment) {
             // Follow the breadcrumbs...
             let clientId = urlParams.get('client-id')
             let queryParams = `client-id=${clientId}`
-            if (urlParams.get('pre-fill') === '1') {
-              // TODO: check this pre-fill logic
+            if (urlParams.get('server-side') === '1') {
               console.log({ queryParams })
               if (environment === 'sandbox') {
                 queryParams += '&sandbox=1'

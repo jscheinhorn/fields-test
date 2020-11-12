@@ -1,4 +1,10 @@
-export default function configureSdk(clientId, environment, apm, buyerCountry) {
+export default function configureSdk(
+  clientId,
+  environment,
+  apm,
+  buyerCountry,
+  currency,
+) {
   let src = 'https://www.'
   let fundingList = ''
   for (let apmKey in apm) {
@@ -9,7 +15,7 @@ export default function configureSdk(clientId, environment, apm, buyerCountry) {
   fundingList = fundingList.slice(0, -1)
   console.log({ fundingList })
   console.log({ buyerCountry })
-  const params = `&components=buttons,fields,marks,funding-eligibility&enable-funding=${fundingList}&buyer-country=${buyerCountry}&currency=EUR`
+  const params = `&components=buttons,fields,marks,funding-eligibility&enable-funding=${fundingList}&buyer-country=${buyerCountry}&currency=${currency}`
   const payPalSdk = {
     sandbox: 'paypal.com/sdk/js?',
     msmaster: 'msmaster.qa.paypal.com/sdk/js?',

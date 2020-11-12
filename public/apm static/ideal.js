@@ -1,6 +1,6 @@
 /* eslint-disable promise/always-return */
 /* eslint-disable consistent-return, new-cap, no-alert, no-console */
-import configureSdk from './configureSdk.js'
+import configureSdk from '../configureSdk.js'
 // import * as swal from 'sweetalert' // This will be for the popup after onApprove,
 // sweetalert has an issue with typescript (needs Swal type specified) and needs:
 // npm install --save @types/sweetalert
