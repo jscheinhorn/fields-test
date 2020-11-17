@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 /* eslint-disable eqeqeq */
 
 // Constants
@@ -8,20 +9,41 @@ const clientId = document.getElementById('client-id')
 const serverSideCheck = document.getElementById('server-side')
 const testEnvDiv = document.getElementById('test-env-div')
 const otherTestEnvDiv = document.getElementById('other-test-env-div')
-const sandboxDefaultId =
-  'AWpNai5MkBQDlnUmeYU02YHGOEkUs-ib8ufPtamRXZ_Uc8BuRJ6gCcaBZ-IVKBCBDtuw_7JRmbmdbERa'
-const otherDefaultId =
-  'AZCjUMsPNzueEuqm2URngrs3LmVxfMQlFD2w3H3BNdo8f4g1Nbg0DEio_WrEpCBis7KPtw2l8OLVRiTS'
+
+// Get Merchant Client ID
+async function getClientId(environment) {
+  const clientIds = await fetch('/api/clientid', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ environment }),
+  })
+  let response = await clientIds.json()
+  console.log({ response })
+  return response
+}
 
 // Envrionment dropdown options
-envDropdown.onchange = function() {
+envDropdown.onchange = async function() {
   document.getElementById('warning').style.display = 'none'
   const envSelection = envDropdown.options[envDropdown.selectedIndex].value
-  if (envSelection === 'sandbox') {
-    clientId.value = sandboxDefaultId
-  } else {
-    clientId.value = otherDefaultId
+  console.log({ envSelection })
+  let clientIdVal = await getClientId(envSelection)
+  clientId.value = clientIdVal
+  console.log({ clientIdVal })
+  const clientIdDiv = document.getElementById('client-id-div')
+
+  switch (envSelection) {
+    case 'sandbox':
+      clientIdDiv.style.display = 'none'
+    case 'live':
+      clientIdDiv.style.display = 'none'
+      break
+    default:
+      clientIdDiv.style.display = 'block'
   }
+
   if (envSelection === 'stage') {
     testEnvDiv.style.display = 'block'
     if (serverSideCheck.checked) {

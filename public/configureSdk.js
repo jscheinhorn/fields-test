@@ -19,6 +19,7 @@ export default function configureSdk(
   const payPalSdk = {
     sandbox: 'paypal.com/sdk/js?',
     msmaster: 'msmaster.qa.paypal.com/sdk/js?',
+    live: 'paypal.com/sdk/js?',
     testEnv: '.qa.paypal.com/sdk/js?',
   }
 
@@ -28,6 +29,13 @@ export default function configureSdk(
       break
     case 'msmaster':
       src += payPalSdk.msmaster
+      break
+    case 'live':
+      let enableFunding = '&enable-funding=${fundingList}'
+      src = src.split(enableFunding)
+      // let idx = src.indexOf(enableFunding)
+      console.log({ src })
+      src += payPalSdk.live
       break
     default:
       // TODO: environment here will be test-env

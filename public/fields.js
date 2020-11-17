@@ -56,7 +56,7 @@ let order = {
     {
       amount: {
         currency_code: 'EUR',
-        value: '49.11',
+        value: '1.00',
       },
     },
   ],

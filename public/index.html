@@ -20,7 +20,114 @@
     </div>
     <form id="form" class="needs-validation" action="fields.html">
       <div class="row" style="display:flex; justify-content:center;">
-        <div class="col"></div>
+        <div class="container col">
+          <div class="panel-group">
+            <div class="panel panel-default">
+              <h4 class="panel-title ppstyle">
+                <a class="ppstyle" data-toggle="collapse" href="#collapse1"
+                  >Supported Countries</a
+                >
+              </h4>
+              <div id="collapse1" class="panel-collapse collapse">
+                <table class="table table-sm">
+                  <tr>
+                    <td>AT</td>
+                    <td>Austria</td>
+                  </tr>
+                  <tr>
+                    <td>BE</td>
+                    <td>Belgium</td>
+                  </tr>
+                  <tr>
+                    <td>DE</td>
+                    <td>Germany</td>
+                  </tr>
+                  <tr>
+                    <td>DK</td>
+                    <td>Denmark</td>
+                  </tr>
+                  <tr>
+                    <td>EE</td>
+                    <td>Estonia</td>
+                  </tr>
+                  <tr>
+                    <td>ES</td>
+                    <td>Spain</td>
+                  </tr>
+                  <tr>
+                    <td>FI</td>
+                    <td>Finland</td>
+                  </tr>
+                  <tr>
+                    <td>GR</td>
+                    <td>Greece</td>
+                  </tr>
+                  <tr>
+                    <td>IT</td>
+                    <td>Italy</td>
+                  </tr>
+                  <tr>
+                    <td>NL</td>
+                    <td>Netherlands</td>
+                  </tr>
+                  <tr>
+                    <td>NO</td>
+                    <td>Norway</td>
+                  </tr>
+                  <tr>
+                    <td>PL</td>
+                    <td>Poland</td>
+                  </tr>
+                  <tr>
+                    <td>SE</td>
+                    <td>Sweden</td>
+                  </tr>
+                  <tr>
+                    <td>GB</td>
+                    <td>Great Britain/United Kingdom</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="panel-group">
+            <div class="panel panel-default">
+              <h4 class="panel-title ppstyle">
+                <a class="ppstyle" data-toggle="collapse" href="#collapse2"
+                  >Supported Currencies</a
+                >
+              </h4>
+              <div id="collapse2" class="panel-collapse collapse">
+                <table class="table table-sm">
+                  <tr>
+                    <td>DKK</td>
+                    <td>Danish krone</td>
+                  </tr>
+                  <tr>
+                    <td>EUR</td>
+                    <td>Euro</td>
+                  </tr>
+                  <tr>
+                    <td>GBP</td>
+                    <td>Pound sterling</td>
+                  </tr>
+                  <tr>
+                    <td>NOK</td>
+                    <td>Norwegian krone</td>
+                  </tr>
+                  <tr>
+                    <td>PLN</td>
+                    <td>Polish złoty</td>
+                  </tr>
+                  <tr>
+                    <td>SEK</td>
+                    <td>Swedish krona</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- MERCHANT OPTIONS -->
         <div class="container col">
           <p class="ppstyle">
@@ -60,6 +167,7 @@
                 <option value="0" selected>Select environment</option>
                 <option value="sandbox">Sandbox</option>
                 <option value="msmaster">msmaster</option>
+                <option value="live">live</option>
                 <option value="stage">Test Environment</option>
               </select>
             </div>
@@ -79,43 +187,21 @@
               <input id="other-test-env" name="other-test-env" />
               <label for="other-test-env">.qa.paypal.com</label>
             </div>
-            <div>
-              <label for="pre-fill"> Client ID: </label>
+            <div id="client-id-div">
+              <label for="client-id"> Client ID: </label>
               <input id="client-id" name="client-id" required />
             </div>
             <div>
               <label for="country"> Country: </label>
-              <select class="custom-select" name="country" id="country">
-                <option value="AT">AT - Austria</option>
-                <option value="BE">BE - Belgium</option>
-                <option value="DE">DE - Germany</option>
-                <option value="DK">DK - Denmark</option>
-                <option value="EE">EE - Estonia</option>
-                <option value="ES">ES - Spain</option>
-                <option value="FI">FI - Finland</option>
-                <option value="GR">GR - Greece</option>
-                <option value="IT">IT - Italy</option>
-                <option value="NL">NL - Netherlands</option>
-                <option value="NO">NO - Norway</option>
-                <option value="PL">PL - Poland</option>
-                <option value="SE">SE - Sweden</option>
-                <option value="GB">GB - Great Britain/United Kingdom</option>
-              </select>
+              <input id="country" name="country" required />
             </div>
             <div>
               <label for="currency"> Currency: </label>
-              <select class="custom-select" name="currency" id="currency">
-                <option value="DKK">DKK - Danish krone</option>
-                <option value="EUR">EUR - Euro</option>
-                <option value="GBP">GBP - Pound sterling</option>
-                <option value="NOK">NOK - Norwegian krone</option>
-                <option value="PLN">PLN - Polish złoty</option>
-                <option value="SEK">SEK - Swedish krona</option>
-              </select>
+              <input id="currency" name="currency" required />
             </div>
             <div>
               <label for="amount"> Amount: </label>
-              <input id="amount" name="amount" value="54.44" required />
+              <input id="amount" name="amount" value="1.00" required />
             </div>
           </div>
         </div>
