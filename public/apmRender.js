@@ -104,56 +104,46 @@ export default function apmRender(
           },
 
           async createOrder(data, actions) {
-            // TODO: want to specify for createPaymentUrl
-            // here environment will be msmaster, sandbox or 'stage'
-            // Follow the breadcrumbs...
-            let clientId = urlParams.get('client-id')
-            let queryParams = `client-id=${clientId}`
-            if (urlParams.get('server-side') === '1') {
-              console.log({ queryParams })
-              if (environment === 'sandbox') {
-                queryParams += '&sandbox=1'
-              } else if (environment === 'live') {
-                queryParams += '&live=1'
-              }
-              let authUrl = '/api/getauthtoken?' + queryParams
-              let createPaymentUrl = '/api/createpayment?' + queryParams
-              console.log({ environment })
-              let accessToken = 'undefined'
+            // let clientId = urlParams.get('client-id')
+            // let queryParams = `client-id=${clientId}`
+            // let authUrl = '/api/getauthtoken?' + queryParams
+            // let createPaymentUrl = '/api/createpayment?' + queryParams
+            // console.log({ environment })
+            // let accessToken = 'undefined'
 
-              try {
-                const authResponse = await fetch(authUrl, {
-                  method: 'post',
-                  headers: {
-                    'content-type': 'application/json',
-                  },
-                  body: JSON.stringify({ stage: environment }),
-                })
-                const authResponseJson = await authResponse.json()
-                console.log({ authResponseJson })
-                accessToken = authResponseJson.access_token
-                console.log('accessToken: ' + accessToken)
-              } catch (error) {
-                console.error(error)
-              }
+            //   try {
+            //     const authResponse = await fetch(authUrl, {
+            //       method: 'post',
+            //       headers: {
+            //         'content-type': 'application/json',
+            //       },
+            //       body: JSON.stringify({ stage: environment }),
+            //     })
+            //     const authResponseJson = await authResponse.json()
+            //     console.log({ authResponseJson })
+            //     accessToken = authResponseJson.access_token
+            //     console.log('accessToken: ' + accessToken)
+            //   } catch (error) {
+            //     console.error(error)
+            //   }
 
-              return fetch(createPaymentUrl, {
-                method: 'post',
-                headers: {
-                  'content-type': 'application/json',
-                },
-                body: JSON.stringify({
-                  stage: environment,
-                  order,
-                  accessToken,
-                }),
-              })
-                .then(res => res.json())
-                .then(createOrderData => {
-                  console.log({ createOrderData })
-                  return createOrderData.id
-                })
-            }
+            //   return fetch(createPaymentUrl, {
+            //     method: 'post',
+            //     headers: {
+            //       'content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify({
+            //       stage: environment,
+            //       order,
+            //       accessToken,
+            //     }),
+            //   })
+            //     .then(res => res.json())
+            //     .then(createOrderData => {
+            //       console.log({ createOrderData })
+            //       return createOrderData.id
+            //     })
+            // }
             return actions.order.create(order).then(createdOrderReturn => {
               console.log({ createdOrderReturn })
               return createdOrderReturn

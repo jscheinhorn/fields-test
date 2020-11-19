@@ -6,7 +6,6 @@ const envDropdown = document.getElementById('environment')
 const testEnvDropdown = document.getElementById('test-env')
 const otherTestEnv = document.getElementById('other-test-env')
 const clientId = document.getElementById('client-id')
-const serverSideCheck = document.getElementById('server-side')
 const testEnvDiv = document.getElementById('test-env-div')
 const otherTestEnvDiv = document.getElementById('other-test-env-div')
 
@@ -68,12 +67,12 @@ testEnvDropdown.onchange = function() {
   }
 }
 
-// Show modal when server-side and stage are selected
-serverSideCheck.onclick = () => {
-  if (serverSideCheck.checked && envDropdown.value === 'stage') {
-    $('#warningModal').modal('show')
-  }
-}
+// TODO: Show modal if desired or delete
+// serverSideCheck.onclick = () => {
+//   if (serverSideCheck.checked && envDropdown.value === 'stage') {
+//     $('#warningModal').modal('show')
+//   }
+// }
 
 // Select all APMs
 let allClicked = false
