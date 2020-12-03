@@ -1,14 +1,30 @@
-import { createOrderUrl, getAuthUrl } from './apiconfig'
+import { createOrderUrl, getAuthUrl, getOrderUrl } from './apiconfig'
 import axios from 'axios'
 import https from 'https'
 
+// TODO: Update to include the client secret for Sandbox and live
 // Auth Token Request
 export async function postGetAuthToken(req, res) {
-  const { live, sandbox, 'client-id': clientId } = req.query
-  const { stage } = req.body
-  const authUrl = getAuthUrl({ live, sandbox, stage })
+  const { 'client-id': clientId } = req.query
+  const { environment } = req.body
+  console.log({ environment })
+  const authUrl = getAuthUrl(environment)
   console.log({ authUrl })
-  const basicAuth = Buffer.from(clientId).toString('base64')
+  let secret
+  let basicAuth
+  switch (environment) {
+    case 'live':
+      secret = process.env.PP_LIVE_CLIENT_SECRET_WEBHOOK
+      basicAuth = Buffer.from(`${clientId}:${secret}`).toString('base64')
+      break
+    case 'sandbox':
+      secret = process.env.PP_SANDBOX_CLIENT_SECRET_WEBHOOK
+      basicAuth = Buffer.from(`${clientId}:${secret}`).toString('base64')
+      break
+    default:
+      basicAuth = process.env.PP_STAGE_MERCH_AUTH_CODE
+      break
+  }
   const agentOptions = {
     rejectUnauthorized: false,
     keepAlive: true,
@@ -34,6 +50,37 @@ export async function postGetAuthToken(req, res) {
   //   resSendGenericResponse(res, response)
 }
 
+// Get Order Request
+export async function getOrder(req, res) {
+  const { 'order-id': orderId } = req.query
+  const { accessToken } = req.body
+  const orderUrl = getOrderUrl() + '/' + orderId
+  console.log({ orderUrl })
+  const agentOptions = {
+    rejectUnauthorized: false,
+    keepAlive: true,
+  }
+  const requestOptions = {
+    method: 'get',
+    url: orderUrl,
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    httpsAgent: new https.Agent(agentOptions),
+  }
+
+  try {
+    const response = await axios(requestOptions)
+    res.status(response.status).json(response.data)
+  } catch (err) {
+    console.error(err)
+    res.send(500)
+  }
+  //   resSendGenericResponse(res, response)
+}
+
+// TODO: Delete - not using server-side for this
 // Create Order Request
 export async function createPaymentHandler(req, res) {
   const { live, sandbox } = req.query

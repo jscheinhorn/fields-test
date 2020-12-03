@@ -1,28 +1,39 @@
 import apienv from './apienv'
 
-export function getAuthUrl({ live, sandbox, stage }) {
-  const apiConfig = getApiConfig({ live, sandbox })
-  const postAuthUrl = normalizeStageContext(apiConfig.authUrl, stage)
+export function getAuthUrl(environment) {
+  const apiConfig = getApiConfig(environment)
+  const postAuthUrl = normalizeStageContext(apiConfig.authUrl, environment)
   return postAuthUrl
+}
+
+// get orderUrl based on environment
+export function getOrderUrl(environment) {
+  const apiConfig = getApiConfig(environment)
+  const postPaymentUrl = normalizeStageContext(apiConfig.ordersUrl, environment)
+  return postPaymentUrl
 }
 
 // TODO: Delete if not needed for server-side
 // create ordersUrl based on environment
-export function createOrderUrl({ live, sandbox, stage }) {
-  const apiConfig = getApiConfig({ live, sandbox })
-  const postPaymentUrl = normalizeStageContext(apiConfig.ordersUrl, stage)
+export function createOrderUrl(environment) {
+  const apiConfig = getApiConfig(environment)
+  const postPaymentUrl = normalizeStageContext(apiConfig.ordersUrl, environment)
   return postPaymentUrl
 }
 
 // Get the URLs for Direct API Calls
-export function getApiConfig({ live, sandbox }) {
+export function getApiConfig(environment) {
   let apiConfig
-  if (live) {
-    apiConfig = apienv.LIVE
-  } else if (sandbox) {
-    apiConfig = apienv.SANDBOX
-  } else {
-    apiConfig = apienv.MSMASTER
+  switch (environment) {
+    case 'live':
+      apiConfig = apienv.LIVE
+      break
+    case 'sandbox':
+      apiConfig = apienv.SANDBOX
+      break
+    default:
+      apiConfig = apienv.MSMASTER
+      break
   }
   return apiConfig
 }

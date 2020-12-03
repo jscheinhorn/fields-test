@@ -2,6 +2,8 @@
 /* eslint-disable max-statements */
 /* eslint-disable promise/always-return */
 /* eslint-disable consistent-return, new-cap, no-alert, no-console */
+// import swal from 'sweetalert'
+
 export default function apmRender(
   apm,
   style,
@@ -34,10 +36,7 @@ export default function apmRender(
       },
 
       onApprove(data, actions) {
-        return actions.order.capture().then(function(details) {
-          console.log({ details })
-          alert(`Transaction completed by ${details.payer.name.given_name}!`)
-        })
+        return actions.order.capture()
       },
     })
     .render('#paypal-btn')
@@ -104,59 +103,69 @@ export default function apmRender(
           },
 
           async createOrder(data, actions) {
-            // let clientId = urlParams.get('client-id')
-            // let queryParams = `client-id=${clientId}`
-            // let authUrl = '/api/getauthtoken?' + queryParams
-            // let createPaymentUrl = '/api/createpayment?' + queryParams
-            // console.log({ environment })
-            // let accessToken = 'undefined'
-
-            //   try {
-            //     const authResponse = await fetch(authUrl, {
-            //       method: 'post',
-            //       headers: {
-            //         'content-type': 'application/json',
-            //       },
-            //       body: JSON.stringify({ stage: environment }),
-            //     })
-            //     const authResponseJson = await authResponse.json()
-            //     console.log({ authResponseJson })
-            //     accessToken = authResponseJson.access_token
-            //     console.log('accessToken: ' + accessToken)
-            //   } catch (error) {
-            //     console.error(error)
-            //   }
-
-            //   return fetch(createPaymentUrl, {
-            //     method: 'post',
-            //     headers: {
-            //       'content-type': 'application/json',
-            //     },
-            //     body: JSON.stringify({
-            //       stage: environment,
-            //       order,
-            //       accessToken,
-            //     }),
-            //   })
-            //     .then(res => res.json())
-            //     .then(createOrderData => {
-            //       console.log({ createOrderData })
-            //       return createOrderData.id
-            //     })
-            // }
-            return actions.order.create(order).then(createdOrderReturn => {
-              console.log({ createdOrderReturn })
-              return createdOrderReturn
-            })
+            let clientId = urlParams.get('client-id')
+            let queryParams = `client-id=${clientId}`
+            let authUrl = '/api/getauthtoken?' + queryParams
+            let accessToken = 'undefined'
+            try {
+              const authResponse = await fetch(authUrl, {
+                method: 'post',
+                headers: {
+                  'content-type': 'application/json',
+                },
+                body: JSON.stringify({ environment }),
+              })
+              const authResponseJson = await authResponse.json()
+              accessToken = authResponseJson.access_token
+              console.log({ accessToken })
+            } catch (error) {
+              console.error(error)
+            }
+            return actions.order
+              .create(order)
+              .then(orderId => {
+                let getOrderUrl = '/api/getorder?order-id=' + orderId
+                console.log({ orderId })
+                sessionStorage.orderId = orderId
+                console.log('sessionStorage.orderId: ', sessionStorage.orderId)
+                return fetch(getOrderUrl, {
+                  method: 'post',
+                  headers: {
+                    'content-type': 'application/json',
+                  },
+                  body: JSON.stringify({ accessToken }),
+                })
+              })
+              .then(orderDetails => {
+                return orderDetails.json()
+              })
+              .then(orderDetailsJson => {
+                console.log({ orderDetailsJson })
+                return orderDetailsJson.id
+              })
           },
 
-          onApprove(data, actions) {
-            // Currently not being called. Aditya is working on it.
+          async onApprove(data, actions) {
+            // Called after returning form the bank page
             console.log({ data, actions })
+            // let orderDetailsOnApprove = await actions.order.get();
+            // console.log('orderDetailsOnApprove json: ',await orderDetailsOnApprove.json())
+            const webhookurl = '/api/webhook'
+            let hook = await fetch(webhookurl, {
+              method: 'post',
+              headers: {
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify({ data, actions, event_type: 'none' }),
+            })
+            console.log({ hook })
+            let hookJson = await hook.json()
+            console.log({ hookJson })
             return actions.order.capture().then(capturedata => {
               const capturedataString = JSON.stringify(capturedata, null, 2)
-              console.log(capturedataString)
-              alert(capturedataString)
+              console.log({ capturedataString })
+              sessionStorage.captureData = capturedataString
+              // alert(capturedataString)
             })
           },
         })

@@ -15,7 +15,7 @@ export default function configureSdk(
   fundingList = fundingList.slice(0, -1)
   console.log({ fundingList })
   console.log({ buyerCountry })
-  const params = `&components=buttons,fields,marks,funding-eligibility&enable-funding=${fundingList}&buyer-country=${buyerCountry}&currency=${currency}`
+  const params = `&components=buttons,fields,marks,funding-eligibility&enable-funding=${fundingList}&currency=${currency}`
   const payPalSdk = {
     sandbox: 'paypal.com/sdk/js?',
     msmaster: 'msmaster.qa.paypal.com/sdk/js?',
@@ -31,17 +31,19 @@ export default function configureSdk(
       src += payPalSdk.msmaster
       break
     case 'live':
-      let enableFunding = '&enable-funding=${fundingList}'
-      src = src.split(enableFunding)
-      // let idx = src.indexOf(enableFunding)
-      console.log({ src })
+      // TODO: Alter URL for live: enable funding not live? remove from url?
       src += payPalSdk.live
       break
     default:
-      // TODO: environment here will be test-env
       src += environment + payPalSdk.testEnv
   }
   src += `client-id=${clientId}` + params
+
+  // 'Query parameter buyer-country disallowed in production env'
+  if (environment !== 'live') {
+    src += `&buyer-country=${buyerCountry}`
+  }
+
   console.log({ clientId })
   console.log({ src })
 
