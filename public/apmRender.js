@@ -103,46 +103,45 @@ export default function apmRender(
           },
 
           async createOrder(data, actions) {
-            let clientId = urlParams.get('client-id')
-            let queryParams = `client-id=${clientId}`
-            let authUrl = '/api/getauthtoken?' + queryParams
-            let accessToken = 'undefined'
-            try {
-              const authResponse = await fetch(authUrl, {
-                method: 'post',
-                headers: {
-                  'content-type': 'application/json',
-                },
-                body: JSON.stringify({ environment }),
-              })
-              const authResponseJson = await authResponse.json()
-              accessToken = authResponseJson.access_token
-              console.log({ accessToken })
-            } catch (error) {
-              console.error(error)
-            }
-            return actions.order
-              .create(order)
-              .then(orderId => {
-                let getOrderUrl = '/api/getorder?order-id=' + orderId
-                console.log({ orderId })
-                sessionStorage.orderId = orderId
-                console.log('sessionStorage.orderId: ', sessionStorage.orderId)
-                return fetch(getOrderUrl, {
-                  method: 'post',
-                  headers: {
-                    'content-type': 'application/json',
-                  },
-                  body: JSON.stringify({ accessToken }),
-                })
-              })
-              .then(orderDetails => {
-                return orderDetails.json()
-              })
-              .then(orderDetailsJson => {
-                console.log({ orderDetailsJson })
-                return orderDetailsJson.id
-              })
+            // let clientId = urlParams.get('client-id')
+            // let queryParams = `client-id=${clientId}`
+            // let authUrl = '/api/getauthtoken?' + queryParams
+            // let accessToken = 'undefined'
+            // try {
+            //   const authResponse = await fetch(authUrl, {
+            //     method: 'post',
+            //     headers: {
+            //       'content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ environment }),
+            //   })
+            //   const authResponseJson = await authResponse.json()
+            //   accessToken = authResponseJson.access_token
+            //   console.log({ accessToken })
+            // } catch (error) {
+            //   console.error(error)
+            // }
+            return actions.order.create(order)
+            // .then(orderId => {
+            //   let getOrderUrl = '/api/getorder?order-id=' + orderId
+            //   console.log({ orderId })
+            //   sessionStorage.orderId = orderId
+            //   console.log('sessionStorage.orderId: ', sessionStorage.orderId)
+            //   return fetch(getOrderUrl, {
+            //     method: 'post',
+            //     headers: {
+            //       'content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ accessToken }),
+            //   })
+            // })
+            // .then(orderDetails => {
+            //   return orderDetails.json()
+            // })
+            // .then(orderDetailsJson => {
+            //   console.log({ orderDetailsJson })
+            //   return orderDetailsJson.id
+            // })
           },
 
           async onApprove(data, actions) {

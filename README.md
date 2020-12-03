@@ -54,3 +54,9 @@ run this example
     ```
     git subtree push --prefix example heroku master
     ```
+
+3.  See Heroku server logs:
+
+    ```
+    git subtree push --prefix example heroku master
+    ```
