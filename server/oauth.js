@@ -42,7 +42,7 @@ async function getAuthToken() {
     headers: {
       //   Accept: "application/json",
       //   Authorization: `Basic ${btoa(bearer)}`,
-      Authorization: `Basic ${MERCHANT_AUTH_CODE}`,
+      Authorization: `Basic ${bearer}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
