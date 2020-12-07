@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 const fetch = require('node-fetch')
 const dotenv = require('dotenv')
+const _ = require('lodash')
 
 const { getAuthToken } = require('./oauth')
 
