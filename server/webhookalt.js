@@ -74,6 +74,7 @@ const verifyWebhook = async (req, res, next) => {
  */
 const captureOrder = async link => {
   const { access_token } = await getAuthToken()
+  console.log({ access_token })
   const res = await fetch(link, {
     headers: {
       'Content-Type': 'application/json',
