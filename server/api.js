@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 const paymentapi = require('./paymentapi')
 const configinfo = require('./configinfo')
-const { webhook } = require('./webhooks')
+const webhooks = require('./webhooks')
 const { catchErrors } = require('./errors')
 const Router = require('express')
 
@@ -13,6 +13,9 @@ router.post('/getauthtoken', catchErrors(paymentapi.postGetAuthToken))
 // Get Order
 router.post('/getorder', catchErrors(paymentapi.getOrder))
 
+// Capture Order
+router.post('/capture', catchErrors(paymentapi.captureOrderHandler))
+
 // TODO: Delete these, not doing server side
 // Server Side API Routes to create order/payment
 router.post('/createpayment', catchErrors(paymentapi.createPaymentHandler))
@@ -21,7 +24,7 @@ router.post('/createpayment', catchErrors(paymentapi.createPaymentHandler))
 router.post('/clientid', catchErrors(configinfo.merchantClientId))
 
 // Webhook URL
-router.post('/webhook', catchErrors(webhook))
+router.post('/webhook', catchErrors(webhooks.webhook))
 
 router.use('*', function(req, res, next) {
   console.log('PROBLEM')

@@ -58,5 +58,5 @@ run this example
 3.  See Heroku server logs:
 
     ```
-    git subtree push --prefix example heroku master
+    heroku logs -t --app fields-test
     ```

@@ -71,13 +71,16 @@ if (urlParams.get('amount')) {
   console.log('order amount: ', order.purchase_units[0].amount.value)
 }
 
-let currency = urlParams.get('currency') ? urlParams.get('currency') : 'EUR'
+let currency = urlParams.get('currency')
+  ? urlParams.get('currency').toUpperCase()
+  : 'EUR'
+
 if (currency) {
   order.purchase_units[0].amount.currency_code = currency
   console.log('currency code: ', order.purchase_units[0].amount.currency_code)
 }
 
-const buyerCountry = urlParams.get('country')
+let buyerCountry = urlParams.get('country').toUpperCase()
 
 let apm = {
   ideal: 0,

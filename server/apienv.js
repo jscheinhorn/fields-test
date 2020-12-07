@@ -23,7 +23,7 @@ export default {
     postPaymentUrl: 'https://msmaster.qa.paypal.com:17266/v1/payments/payment',
     cartUrl: 'https://msmaster.qa.paypal.com:17266/v1/payments/carts',
     transactionUrl: 'https://msmaster.qa.paypal.com:11881/v1/payments/sale',
-    ordersUrl: 'https://msmaster.qa.paypal.com:12326/v2/checkout/orders',
+    ordersUrl: 'https://api.msmaster.qa.paypal.com:12326/v2/checkout/orders',
     capturesUrl: 'https://msmaster.qa.paypal.com:18824/v2/payments/captures',
     thirdPartyMerchantEmail: 'mbathula-merchant@paypal.com',
     authUrl: 'https://api.msmaster.qa.paypal.com:12714/v1/oauth2/token',

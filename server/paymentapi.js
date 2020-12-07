@@ -2,22 +2,21 @@ import { createOrderUrl, getAuthUrl, getOrderUrl } from './apiconfig'
 import axios from 'axios'
 import https from 'https'
 
-// TODO: Update to include the client secret for Sandbox and live
 // Auth Token Request
 export async function postGetAuthToken(req, res) {
-  const { 'client-id': clientId } = req.query
   const { environment } = req.body
   console.log({ environment })
   const authUrl = getAuthUrl(environment)
   console.log({ authUrl })
-  let secret
-  let basicAuth
+  let secret, clientId, basicAuth
   switch (environment) {
     case 'live':
+      clientId = process.env.PP_LIVE_CLIENT_ID_WEBHOOK
       secret = process.env.PP_LIVE_CLIENT_SECRET_WEBHOOK
       basicAuth = Buffer.from(`${clientId}:${secret}`).toString('base64')
       break
     case 'sandbox':
+      clientId = process.env.PP_SANDBOX_CLIENT_ID_WEBHOOK
       secret = process.env.PP_SANDBOX_CLIENT_SECRET_WEBHOOK
       basicAuth = Buffer.from(`${clientId}:${secret}`).toString('base64')
       break
@@ -47,7 +46,6 @@ export async function postGetAuthToken(req, res) {
     console.error(err)
     res.send(500)
   }
-  //   resSendGenericResponse(res, response)
 }
 
 // Get Order Request
@@ -77,7 +75,6 @@ export async function getOrder(req, res) {
     console.error(err)
     res.send(500)
   }
-  //   resSendGenericResponse(res, response)
 }
 
 // TODO: Delete - not using server-side for this
@@ -105,6 +102,34 @@ export async function createPaymentHandler(req, res) {
   try {
     const createOrderResponse = await axios(requestOptions)
     res.status(createOrderResponse.status).json(createOrderResponse.data)
+  } catch (err) {
+    console.error(err)
+    res.send(500)
+  }
+}
+
+// Capture order request
+export async function captureOrderHandler(req, res) {
+  const { order, environment, accessToken } = req.body
+  const orderUrl = createOrderUrl(environment) + '/' + order + '/capture'
+  console.log({ orderUrl })
+  const agentOptions = {
+    rejectUnauthorized: false,
+    keepAlive: true,
+  }
+  const requestOptions = {
+    method: 'post',
+    url: orderUrl,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    httpsAgent: new https.Agent(agentOptions),
+  }
+
+  try {
+    const captureOrderResponse = await axios(requestOptions)
+    res.status(captureOrderResponse.status).json(captureOrderResponse.data)
   } catch (err) {
     console.error(err)
     res.send(500)
