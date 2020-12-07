@@ -98,7 +98,7 @@ const orderApproved = async (req, res) => {
   console.log('Attempting Order Capture')
   console.log({ links })
   // Search for the capture link in the request.
-  const captureLink = _.find(links, link => link.rel === 'capture').href
+  const captureLink = _.find(links, link => link.method === 'POST').href
 
   // If a capture link was given, use it to capture the order.
   if (captureLink !== '') {
