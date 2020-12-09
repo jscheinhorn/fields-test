@@ -35,7 +35,11 @@ export default function configureSdk(
       src += payPalSdk.live
       break
     default:
-      src += environment + payPalSdk.testEnv
+      if (environment.includes('.qa.paypal.com')) {
+        src = 'https://' + environment + '/sdk/js?'
+      } else {
+        src += environment + payPalSdk.testEnv
+      }
   }
   src += `client-id=${clientId}` + params
 

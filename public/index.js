@@ -45,9 +45,6 @@ envDropdown.onchange = async function() {
 
   if (envSelection === 'stage') {
     testEnvDiv.style.display = 'block'
-    // if (serverSideCheck.checked) {
-    //   $('#warningModal').modal('show')
-    // }
   } else {
     testEnvDiv.style.display = 'none'
     otherTestEnvDiv.style.display = 'none'
@@ -66,13 +63,6 @@ testEnvDropdown.onchange = function() {
     otherTestEnvDiv.style.display = 'none'
   }
 }
-
-// TODO: Show modal if desired or delete
-// serverSideCheck.onclick = () => {
-//   if (serverSideCheck.checked && envDropdown.value === 'stage') {
-//     $('#warningModal').modal('show')
-//   }
-// }
 
 // Select all APMs
 let allClicked = false
