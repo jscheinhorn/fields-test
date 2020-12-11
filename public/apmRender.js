@@ -139,8 +139,10 @@ export default function apmRender(
               accessToken,
             }),
           })
-          // console.log(await captureReturn.json())
-          document.getElementById('modal-body').innerText = JSON.stringify(data)
+          let captureReturnJson = await captureReturn.json()
+          document.getElementById('modal-body').innerText = JSON.stringify(
+            captureReturnJson,
+          )
           $('#warningModal').modal('show')
           return captureReturn
         },

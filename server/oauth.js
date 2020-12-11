@@ -13,7 +13,7 @@ const MERCHANT_AUTH_CODE = process.env.PP_STAGE_MERCH_AUTH_CODE
 let BASE_URL
 const PROD = 'https://api.paypal.com'
 const SANDBOX = 'https://api.sandbox.paypal.com'
-const STAGE = `https://api.msmaster.qa.paypal.com`
+const STAGE = `https://api.${process.env.TEST_ENV}.qa.paypal.com`
 
 switch (process.env.NODE_ENV) {
   case 'production':
@@ -37,11 +37,11 @@ switch (process.env.NODE_ENV) {
 // Get an OAuth token for the PayPal Orders API using the credentials included in the .env file.
 // https://developer.paypal.com/docs/api/get-an-access-token-curl/
 async function getAuthToken() {
+  console.log({ BASE_URL })
   const response = await fetch(`${BASE_URL}/v1/oauth2/token`, {
     body: 'grant_type=client_credentials',
     headers: {
       //   Accept: "application/json",
-      //   Authorization: `Basic ${btoa(bearer)}`,
       Authorization: `Basic ${bearer}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     },

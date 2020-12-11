@@ -179,8 +179,10 @@ const subscribeToHook = async (url, events) => {
       console.log(
         'Patched existing webhook. Result of update:',
         res,
-        'for ',
+        'for webhook id',
         hookID,
+        'subscribed to',
+        url,
       )
     } else {
       // The webhook for this URL does not exist, so create it. See: https://developer.paypal.com/docs/api/webhooks/v1/#webhooks_post
