@@ -98,7 +98,7 @@ export default function apmRender(
 
       let button = paypal.Buttons({
         fundingSource: paypal.FUNDING[`${apmKey.toUpperCase()}`],
-
+        upgradeLSAT: true,
         style: {
           label: 'pay',
         },
@@ -110,41 +110,22 @@ export default function apmRender(
         // Called after returning from the bank page
         async onApprove(data, actions) {
           console.log({ data, actions })
-          let authUrl = '/api/getauthtoken?'
-          let accessToken = 'undefined'
-          try {
-            const authResponse = await fetch(authUrl, {
-              method: 'post',
-              headers: {
-                'content-type': 'application/json',
-              },
-              body: JSON.stringify({ environment }),
-            })
-            const authResponseJson = await authResponse.json()
-            accessToken = authResponseJson.access_token
-            console.log({ accessToken })
-          } catch (error) {
-            console.error(error)
-          }
-
-          const captureUrl = '/api/capture'
-          let captureReturn = await fetch(captureUrl, {
+          const getOrderUrl = `/api/getorder?order-id=${data.orderID}`
+          fetch(getOrderUrl, {
             method: 'post',
             headers: {
               'content-type': 'application/json',
             },
-            body: JSON.stringify({
-              order: data.orderID,
-              environment,
-              accessToken,
-            }),
+            body: JSON.stringify({ environment }),
           })
-          let captureReturnJson = await captureReturn.json()
-          document.getElementById('modal-body').innerText = JSON.stringify(
-            captureReturnJson,
-          )
-          $('#warningModal').modal('show')
-          return captureReturn
+            .then(orderDetails => orderDetails.json())
+            .then(orderDetailsJson => {
+              document.getElementById('modal-body').innerText = JSON.stringify(
+                orderDetailsJson,
+              )
+              $('#warningModal').modal('show')
+              return orderDetailsJson
+            })
         },
       })
       if (button.isEligible()) {

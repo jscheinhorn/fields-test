@@ -20,6 +20,8 @@ router.post('/capture', catchErrors(paymentapi.captureOrderHandler))
 // Server Side API Routes to create order/payment
 router.post('/createpayment', catchErrors(paymentapi.createPaymentHandler))
 
+router.get('/getorder', catchErrors(paymentapi.createPaymentHandler))
+
 // Environment and Merchant Configurations
 router.post('/clientid', catchErrors(configinfo.merchantClientId))
 

@@ -1,4 +1,5 @@
 import { createOrderUrl, getAuthUrl, getOrderUrl } from './apiconfig'
+import getAuth from './util/auth'
 import axios from 'axios'
 import https from 'https'
 
@@ -51,8 +52,9 @@ export async function postGetAuthToken(req, res) {
 // Get Order Request
 export async function getOrder(req, res) {
   const { 'order-id': orderId } = req.query
-  const { accessToken } = req.body
-  const orderUrl = getOrderUrl() + '/' + orderId
+  const accessToken = await getAuth(req.body.environment)
+  console.log('getOrder access token: ', { accessToken })
+  const orderUrl = getOrderUrl(req.body.environment) + '/' + orderId
   console.log({ orderUrl })
   const agentOptions = {
     rejectUnauthorized: false,
