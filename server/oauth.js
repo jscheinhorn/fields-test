@@ -16,7 +16,7 @@ const SANDBOX = 'https://api.sandbox.paypal.com'
 const STAGE = `https://api.${process.env.TEST_ENV}.qa.paypal.com`
 
 switch (process.env.NODE_ENV) {
-  case 'production':
+  case 'live':
     BASE_URL = PROD
     PAYPAL_CLIENT_ID = process.env.PP_LIVE_CLIENT_ID_WEBHOOK
     PAYPAL_CLIENT_SECRET = process.env.PP_LIVE_CLIENT_SECRET_WEBHOOK
@@ -41,13 +41,11 @@ async function getAuthToken() {
   const response = await fetch(`${BASE_URL}/v1/oauth2/token`, {
     body: 'grant_type=client_credentials',
     headers: {
-      //   Accept: "application/json",
       Authorization: `Basic ${bearer}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
   })
-
   const { access_token } = await response.json()
 
   return { access_token }

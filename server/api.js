@@ -1,7 +1,7 @@
 /* eslint-disable new-cap */
 const paymentapi = require('./paymentapi')
 const configinfo = require('./configinfo')
-const webhooks = require('./webhooks')
+const webhooks = require('./webhookalt')
 const { catchErrors } = require('./errors')
 const Router = require('express')
 

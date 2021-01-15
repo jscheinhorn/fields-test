@@ -23,6 +23,22 @@ const BASE_URL =
 
 let hooks = {}
 
+export function webhook(req, res, next) {
+  try {
+    console.log(
+      'INCOMING PAYPAL WEBHOOK...\n%s',
+      JSON.stringify(req.body, null, 2),
+    )
+
+    const WEBHOOK_EVENT_TYPE = req.body.event_type
+    console.log({ WEBHOOK_EVENT_TYPE })
+
+    res.json({ WEBHOOK_EVENT_TYPE })
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 /**
  * Verifies a webhook using its provided headers, id, and event (body of req).
  * Returns true if it is successfully verified, else false.
