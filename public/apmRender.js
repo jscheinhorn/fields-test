@@ -111,6 +111,29 @@ export default function apmRender(
         async onApprove(data, actions) {
           console.log({ data, actions })
           const getOrderUrl = `/api/getorder?order-id=${data.orderID}`
+          setTimeout(() => {
+            fetch(getOrderUrl, {
+              method: 'post',
+              headers: {
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify({ environment }),
+            })
+              .then(orderDetails => orderDetails.json())
+              .then(orderDetailsJson => {
+                document.getElementById(
+                  'modal-body',
+                ).innerHTML = `<strong>Order Approved: </strong>\n ${JSON.stringify(
+                  orderDetailsJson,
+                )}`
+                $('#warningModal').modal('show')
+                return orderDetailsJson
+              })
+          }, 30000)
+        },
+        async onCancel(data, actions) {
+          console.log({ data, actions })
+          const getOrderUrl = `/api/getorder?order-id=${data.orderID}`
           fetch(getOrderUrl, {
             method: 'post',
             headers: {
@@ -120,9 +143,11 @@ export default function apmRender(
           })
             .then(orderDetails => orderDetails.json())
             .then(orderDetailsJson => {
-              document.getElementById('modal-body').innerText = JSON.stringify(
+              document.getElementById(
+                'modal-body',
+              ).innerHTML = `<strong>Order Cancelled: </strong>\n ${JSON.stringify(
                 orderDetailsJson,
-              )
+              )}`
               $('#warningModal').modal('show')
               return orderDetailsJson
             })
