@@ -3,6 +3,35 @@ import { getAuthToken } from './oauth'
 import axios from 'axios'
 import https from 'https'
 
+// Create Order Request
+export async function createOrder(req, res) {
+  const { order, environment } = req.body
+  const { access_token } = await getAuthToken(environment)
+  const orderUrl = getOrderUrl(environment)
+  const agentOptions = {
+    rejectUnauthorized: false,
+    keepAlive: true,
+  }
+  const requestOptions = {
+    method: 'post',
+    url: orderUrl,
+    headers: {
+      'Content-type': 'application/json',
+      Authorization: `Bearer ${access_token}`,
+    },
+    data: order,
+    httpsAgent: new https.Agent(agentOptions),
+  }
+
+  try {
+    const response = await axios(requestOptions)
+    res.status(response.status).json(response.data)
+  } catch (err) {
+    console.error(err)
+    res.send(500)
+  }
+}
+
 // Get Order Request
 export async function getOrder(req, res) {
   const { 'order-id': orderId } = req.query

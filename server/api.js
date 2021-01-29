@@ -10,6 +10,9 @@ const router = Router()
 // Get Auth Token for API Access
 router.post('/getauthtoken', catchErrors(paymentapi.postGetAuthToken))
 
+// Create Order
+router.post('/createorder', catchErrors(paymentapi.createOrder))
+
 // Get Order
 router.post('/getorder', catchErrors(paymentapi.getOrder))
 

@@ -84,16 +84,18 @@ export default function apmRender(
         fields: {
           name: {
             value: name,
-            hidden: false,
           },
           email: {
-            value: name,
-            hidden: false,
+            value: name.trim() + '@test.com',
           },
         },
       })
       if (field.isEligible() && mark.isEligible()) {
         field.render(`#${apmKey}-container`)
+      } else {
+        console.log(
+          `${apmKey} eligibility: field-${field.isEligible()} mark-${mark.isEligible()}`,
+        )
       }
 
       let button = paypal.Buttons({
@@ -103,7 +105,17 @@ export default function apmRender(
           label: 'pay',
         },
 
-        async createOrder(data, actions) {
+        createOrder(data, actions) {
+          /** Used to Test if Accepts Existing Order **/
+          // let fetchData = {order, environment}
+          // return fetch('/api/createorder', {
+          //   method: 'post',
+          //   headers: {
+          //       'content-type': 'application/json',
+          //     },
+          //   body: JSON.stringify(fetchData)
+          // }).then(orderInfo => orderInfo.json())
+          // .then(orderInfoJson => orderInfoJson.id)
           return actions.order.create(order)
         },
 
@@ -131,8 +143,8 @@ export default function apmRender(
               })
           }, 30000)
         },
+
         async onCancel(data, actions) {
-          console.log({ data, actions })
           const getOrderUrl = `/api/getorder?order-id=${data.orderID}`
           fetch(getOrderUrl, {
             method: 'post',
