@@ -9,7 +9,7 @@ const clientId = document.getElementById('client-id')
 const testEnvDiv = document.getElementById('test-env-div')
 const otherTestEnvDiv = document.getElementById('other-test-env-div')
 
-// Get Merchant Client ID
+// Get Merchant Client ID Based on Environment
 async function getClientId(environment) {
   const clientIds = await fetch('/api/clientid', {
     method: 'POST',
@@ -18,9 +18,9 @@ async function getClientId(environment) {
     },
     body: JSON.stringify({ environment }),
   })
-  let response = await clientIds.json()
-  console.log({ response })
-  return response
+  const envClientId = await clientIds.json()
+  console.log({ envClientId })
+  return envClientId
 }
 
 // Envrionment dropdown options
@@ -30,7 +30,6 @@ envDropdown.onchange = async function() {
   console.log({ envSelection })
   let clientIdVal = await getClientId(envSelection)
   clientId.value = clientIdVal
-  console.log({ clientIdVal })
   const clientIdDiv = document.getElementById('client-id-div')
 
   switch (envSelection) {
@@ -88,5 +87,5 @@ form.onsubmit = function(event) {
     event.preventDefault()
     document.getElementById('warning').style.display = 'block'
   }
-  // TODO: ALSO DO NOT GO WITHOUT AT LEAST ONE APM SELECTED
+  // TODO (OPTIONAL): ALSO DO NOT GO WITHOUT AT LEAST ONE APM SELECTED
 }

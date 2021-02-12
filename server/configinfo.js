@@ -1,3 +1,5 @@
+// Used to get Client ID based on Environment dropdown selection
+// api/clientid
 export async function merchantClientId(req, res) {
   let clientId
   const { environment } = req.body
@@ -15,6 +17,7 @@ export async function merchantClientId(req, res) {
   res.status(200).json(clientId)
 }
 
+// TODO: Delete? Not used
 export async function merchantSecret(req, res) {
   let clientId
   const { environment } = req.body
@@ -26,7 +29,7 @@ export async function merchantSecret(req, res) {
       clientSecret = process.env.PP_LIVE_CLIENT_SECRET_WEBHOOK
       break
     default:
-      clientSecret = process.env.PP_STAGE_CLIENT_ID // TODO: need this? currently N/A
+      clientSecret = process.env.PP_STAGE_CLIENT_ID // TODO: need this? Using PP_STAGE_MERCH_AUTH_CODE env variable
       break
   }
   res.status(200).json(clientSecret)

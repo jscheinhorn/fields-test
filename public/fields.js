@@ -4,11 +4,13 @@ import configureSdk from './configureSdk.js'
 import apmRender from './apmRender.js'
 
 const urlParams = new URLSearchParams(window.location.search)
-const clientId = urlParams.get('client-id')
+const clientId = urlParams.get('client-id') // Necessary? Used for SDK script, but stage MERCHANT_AUTH_CODE hard-coded from env
 let environment = urlParams.get('environment')
 const testEnv = urlParams.get('test-env')
 const otherTe = urlParams.get('other-test-env')
 console.log({ environment, testEnv, otherTe })
+
+// Specify stage name
 if (environment === 'stage') {
   if (testEnv === 'other') {
     environment = otherTe
@@ -16,6 +18,8 @@ if (environment === 'stage') {
     environment = testEnv
   }
 }
+
+// Make call to server to change process.env.NODE_ENV and TEST_ENV when user selects new environment
 console.log({ environment })
 
 let name = ''
@@ -66,6 +70,7 @@ let order = {
   },
 }
 
+// Change amount value from default
 if (urlParams.get('amount')) {
   order.purchase_units[0].amount.value = urlParams.get('amount')
   console.log('order amount: ', order.purchase_units[0].amount.value)
@@ -75,11 +80,13 @@ let currency = urlParams.get('currency')
   ? urlParams.get('currency').toUpperCase()
   : 'EUR'
 
+// Change currency value from default
 if (currency) {
   order.purchase_units[0].amount.currency_code = currency
   console.log('currency code: ', order.purchase_units[0].amount.currency_code)
 }
 
+// Used in testing. Locale is used in live.
 let buyerCountry = urlParams.get('country').toUpperCase()
 
 let apm = {
@@ -100,10 +107,13 @@ for (let keyValuePair of urlParams) {
 }
 console.log({ apm })
 
+// Configure the PayPal JavaScript SDK
 const src = configureSdk(clientId, environment, apm, buyerCountry, currency)
 let script = document.createElement('SCRIPT')
 script.src = src
+
+// Function to render the selected APMs
 script.onload = function() {
-  apmRender(apm, style, order, urlParams, environment, name)
+  apmRender(apm, style, order, environment, name)
 }
 document.head.appendChild(script)

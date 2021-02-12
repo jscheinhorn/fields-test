@@ -10,7 +10,7 @@ dotenv.config()
 // Used for making API calls to subscribe to and verify webhooks
 const PROD = 'https://api.paypal.com'
 const SANDBOX = 'https://api.sandbox.paypal.com'
-const STAGE = `https://api.msmaster.qa.paypal.com`
+const STAGE = `https://api.heroku.stage.paypal.com`
 
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:8080'
 

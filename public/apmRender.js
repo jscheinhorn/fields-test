@@ -7,7 +7,6 @@ export default function apmRender(
   apm,
   style,
   order,
-  urlParams,
   environment,
   name,
 ) {
@@ -120,8 +119,11 @@ export default function apmRender(
         },
 
         // Called after returning from the bank page
+        // Order is captured via webhook
         async onApprove(data, actions) {
           console.log({ data, actions })
+
+          // Display order status and details in modal
           const getOrderUrl = `/api/getorder?order-id=${data.orderID}`
           setTimeout(() => {
             fetch(getOrderUrl, {

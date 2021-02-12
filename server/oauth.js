@@ -13,7 +13,7 @@ const MERCHANT_AUTH_CODE = process.env.PP_STAGE_MERCH_AUTH_CODE
 let BASE_URL
 const PROD = 'https://api.paypal.com'
 const SANDBOX = 'https://api.sandbox.paypal.com'
-const STAGE = `https://api.${process.env.TEST_ENV}.qa.paypal.com`
+const STAGE = `https://api.${process.env.TEST_ENV}.stage.paypal.com`
 
 switch (process.env.NODE_ENV) {
   case 'live':

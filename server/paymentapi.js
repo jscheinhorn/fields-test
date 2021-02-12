@@ -60,7 +60,8 @@ export async function getOrder(req, res) {
   }
 }
 
-// TODO: Delete if not being used
+// TODO: Delete if not being used. 
+// Using webhook to capture orders for Drop-in UI
 // Capture order request
 export async function captureOrderHandler(req, res) {
   const { order, environment, accessToken } = req.body
