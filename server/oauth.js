@@ -65,8 +65,8 @@ async function getAuthToken() {
   //   method: 'POST',
   // })
   console.log('*** Making axios request for auth token: ***')
-  const response = axios(requestOptions)
-  const { access_token } = await response.json()
+  const { data } = await axios(requestOptions)
+  const { access_token } = data
 
   return { access_token }
 }
