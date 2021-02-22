@@ -2,6 +2,10 @@
 const dotenv = require('dotenv')
 const btoa = require('btoa')
 const fetch = require('node-fetch')
+const HttpsProxyAgent = require('https-proxy-agent');
+
+const proxy = process.env.QUOTAGUARDSTATIC_URL;
+const agent = new HttpsProxyAgent(proxy);
 
 dotenv.config()
 
@@ -39,6 +43,7 @@ switch (process.env.NODE_ENV) {
 async function getAuthToken() {
   console.log({ BASE_URL })
   const response = await fetch(`${BASE_URL}/v1/oauth2/token`, {
+    agent,
     body: 'grant_type=client_credentials',
     headers: {
       Authorization: `Basic ${bearer}`,
