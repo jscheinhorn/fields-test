@@ -1,11 +1,13 @@
 /* eslint-disable no-nested-ternary */
 const dotenv = require('dotenv')
 const btoa = require('btoa')
-const fetch = require('node-fetch')
+// const fetch = require('node-fetch')
+const axios = require('axios')
 const HttpsProxyAgent = require('https-proxy-agent');
 
 const proxy = process.env.QUOTAGUARDSTATIC_URL;
 const agent = new HttpsProxyAgent(proxy);
+console.log({agent})
 
 dotenv.config()
 
@@ -38,19 +40,32 @@ switch (process.env.NODE_ENV) {
     break
 }
 
+const requestOptions = {
+  method: 'post',
+  url: `${BASE_URL}/v1/oauth2/token`,
+  headers: {
+    'Content-type': 'application/x-www-form-urlencoded',
+    Authorization: `Basic ${bearer}`,
+  },
+  data: 'grant_type=client_credentials',
+  httpsAgent: agent,
+}
+
 // Get an OAuth token for the PayPal Orders API using the credentials included in the .env file.
 // https://developer.paypal.com/docs/api/get-an-access-token-curl/
 async function getAuthToken() {
   console.log({ BASE_URL })
-  const response = await fetch(`${BASE_URL}/v1/oauth2/token`, {
-    agent,
-    body: 'grant_type=client_credentials',
-    headers: {
-      Authorization: `Basic ${bearer}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    method: 'POST',
-  })
+  // const response = await fetch(`${BASE_URL}/v1/oauth2/token`, {
+  //   agent,
+  //   body: 'grant_type=client_credentials',
+  //   headers: {
+  //     Authorization: `Basic ${bearer}`,
+  //     'Content-Type': 'application/x-www-form-urlencoded',
+  //   },
+  //   method: 'POST',
+  // })
+  console.log('*** Making axios request for auth token: ***')
+  const response = axios(requestOptions)
   const { access_token } = await response.json()
 
   return { access_token }
