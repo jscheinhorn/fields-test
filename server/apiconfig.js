@@ -44,6 +44,7 @@ export function normalizeStageContext(context, stage) {
   if (stage) {
     if (newContext.includes('msmaster')) {
       newContext = newContext.replace('msmaster.qa', 'heroku.stage')
+      newContext = newContext.replace(':12326', '')
     }
   }
   return newContext
