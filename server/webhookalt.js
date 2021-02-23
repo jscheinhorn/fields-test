@@ -71,7 +71,7 @@ const verifyWebhook = async (req, res, next) => {
   }
   const response = await fetch(
     `${BASE_URL}/v1/notifications/verify-webhook-signature`,
-    {
+    { agent,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${access_token}`,
@@ -96,8 +96,8 @@ const captureOrder = async link => {
   const { access_token } = await getAuthToken()
   console.log({ access_token })
   const res = await fetch(link, {
+    agent,
     headers: {
-      agent,
       'Content-Type': 'application/json',
       Authorization: `Bearer ${access_token}`,
     },
@@ -140,6 +140,7 @@ const getHookID = async url => {
     const { access_token } = await getAuthToken()
     // Gets all assigned webhooks for this account: https://developer.paypal.com/docs/api/webhooks/v1/#webhooks_list
     const res = await fetch(BASE_URL + '/v1/notifications/webhooks', {
+      agent,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${access_token}`,
@@ -188,6 +189,7 @@ const subscribeToHook = async (url, events) => {
       const res = await fetch(
         `${BASE_URL}/v1/notifications/webhooks/${hookID}`,
         {
+          agent,
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${access_token}`,
@@ -212,6 +214,7 @@ const subscribeToHook = async (url, events) => {
         event_types,
       }
       const response = await fetch(`${BASE_URL}/v1/notifications/webhooks`, {
+        agent,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,
