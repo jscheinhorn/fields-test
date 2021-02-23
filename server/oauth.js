@@ -7,7 +7,6 @@ const HttpsProxyAgent = require('https-proxy-agent');
 
 const proxy = process.env.QUOTAGUARDSTATIC_URL;
 const agent = new HttpsProxyAgent(proxy);
-console.log({agent})
 
 dotenv.config()
 

@@ -2,6 +2,10 @@
 const fetch = require('node-fetch')
 const dotenv = require('dotenv')
 const _ = require('lodash')
+const HttpsProxyAgent = require('https-proxy-agent');
+
+const proxy = process.env.QUOTAGUARDSTATIC_URL;
+const agent = new HttpsProxyAgent(proxy);
 
 const { getAuthToken } = require('./oauth')
 
@@ -93,6 +97,7 @@ const captureOrder = async link => {
   console.log({ access_token })
   const res = await fetch(link, {
     headers: {
+      agent,
       'Content-Type': 'application/json',
       Authorization: `Bearer ${access_token}`,
     },
