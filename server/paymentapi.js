@@ -2,6 +2,10 @@ import { createOrderUrl, getOrderUrl } from './apiconfig'
 import { getAuthToken } from './oauth'
 import axios from 'axios'
 import https from 'https'
+import HttpsProxyAgent from 'https-proxy-agent';
+
+const proxy = process.env.QUOTAGUARDSTATIC_URL;
+const agent = new HttpsProxyAgent(proxy);
 
 // Create Order Request
 export async function createOrder(req, res) {
@@ -37,10 +41,7 @@ export async function getOrder(req, res) {
   const { 'order-id': orderId } = req.query
   const { access_token } = await getAuthToken(req.body.environment)
   const orderUrl = getOrderUrl(req.body.environment) + '/' + orderId
-  const agentOptions = {
-    rejectUnauthorized: false,
-    keepAlive: true,
-  }
+
   const requestOptions = {
     method: 'get',
     url: orderUrl,
@@ -48,7 +49,7 @@ export async function getOrder(req, res) {
       'Content-type': 'application/json',
       Authorization: `Bearer ${access_token}`,
     },
-    httpsAgent: new https.Agent(agentOptions),
+    httpsAgent: agent,
   }
 
   try {

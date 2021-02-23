@@ -102,7 +102,8 @@ const captureOrder = async link => {
       Authorization: `Bearer ${access_token}`,
     },
     method: 'POST',
-  }).then(response => {console.log(response.json()); return response.json()})
+  }).then(response => response.json())
+  .then(responseJson => {console.log({responseJson}); return responseJson})
   console.log({res})
   return res
 }
