@@ -95,6 +95,11 @@ const verifyWebhook = async (req, res, next) => {
 const captureOrder = async link => {
   const { access_token } = await getAuthToken()
   console.log({ access_token })
+  let splitLink = link.split('/')
+  splitLink.pop()
+  const order = splitLink.pop()
+  if (BASE_URL===STAGE) {link = STAGE+`/v2/checkout/orders/${order}/capture`}
+  console.log({link})
   const res = await fetch(link, {
     agent,
     headers: {
