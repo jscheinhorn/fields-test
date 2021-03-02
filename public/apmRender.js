@@ -85,7 +85,7 @@ export default function apmRender(
             value: name,
           },
           email: {
-            value: name.trim() + '@test.com',
+            value: name.split(' ').join('.') + '@test.com',
           },
         },
       })

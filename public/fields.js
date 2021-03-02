@@ -10,7 +10,8 @@ const testEnv = urlParams.get('test-env')
 const otherTe = urlParams.get('other-test-env')
 console.log({ environment, testEnv, otherTe })
 
-// Specify stage name
+// Test environment only used for JS SDK integration 
+// All API calls made to partner stage
 if (environment === 'stage') {
   if (testEnv === 'other') {
     environment = otherTe
