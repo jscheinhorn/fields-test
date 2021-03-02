@@ -20,114 +20,7 @@
     </div>
     <form id="form" class="needs-validation" action="fields.html">
       <div class="row" style="display:flex; justify-content:center;">
-        <div class="container col">
-          <div class="panel-group">
-            <div class="panel panel-default">
-              <h4 class="panel-title ppstyle">
-                <a class="ppstyle" data-toggle="collapse" href="#collapse1"
-                  >Supported Countries</a
-                >
-              </h4>
-              <div id="collapse1" class="panel-collapse collapse">
-                <table class="table table-sm">
-                  <tr>
-                    <td>AT</td>
-                    <td>Austria</td>
-                  </tr>
-                  <tr>
-                    <td>BE</td>
-                    <td>Belgium</td>
-                  </tr>
-                  <tr>
-                    <td>DE</td>
-                    <td>Germany</td>
-                  </tr>
-                  <tr>
-                    <td>DK</td>
-                    <td>Denmark</td>
-                  </tr>
-                  <tr>
-                    <td>EE</td>
-                    <td>Estonia</td>
-                  </tr>
-                  <tr>
-                    <td>ES</td>
-                    <td>Spain</td>
-                  </tr>
-                  <tr>
-                    <td>FI</td>
-                    <td>Finland</td>
-                  </tr>
-                  <tr>
-                    <td>GR</td>
-                    <td>Greece</td>
-                  </tr>
-                  <tr>
-                    <td>IT</td>
-                    <td>Italy</td>
-                  </tr>
-                  <tr>
-                    <td>NL</td>
-                    <td>Netherlands</td>
-                  </tr>
-                  <tr>
-                    <td>NO</td>
-                    <td>Norway</td>
-                  </tr>
-                  <tr>
-                    <td>PL</td>
-                    <td>Poland</td>
-                  </tr>
-                  <tr>
-                    <td>SE</td>
-                    <td>Sweden</td>
-                  </tr>
-                  <tr>
-                    <td>GB</td>
-                    <td>Great Britain/United Kingdom</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="panel-group">
-            <div class="panel panel-default">
-              <h4 class="panel-title ppstyle">
-                <a class="ppstyle" data-toggle="collapse" href="#collapse2"
-                  >Supported Currencies</a
-                >
-              </h4>
-              <div id="collapse2" class="panel-collapse collapse">
-                <table class="table table-sm">
-                  <tr>
-                    <td>DKK</td>
-                    <td>Danish krone</td>
-                  </tr>
-                  <tr>
-                    <td>EUR</td>
-                    <td>Euro</td>
-                  </tr>
-                  <tr>
-                    <td>GBP</td>
-                    <td>Pound sterling</td>
-                  </tr>
-                  <tr>
-                    <td>NOK</td>
-                    <td>Norwegian krone</td>
-                  </tr>
-                  <tr>
-                    <td>PLN</td>
-                    <td>Polish złoty</td>
-                  </tr>
-                  <tr>
-                    <td>SEK</td>
-                    <td>Swedish krona</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="col"></div>
         <!-- MERCHANT OPTIONS -->
         <div class="container col">
           <p class="ppstyle">
@@ -146,6 +39,18 @@
                 Pre-fill buyer information</label
               >
             </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                id="server-create"
+                type="checkbox"
+                name="server-create"
+                value="1"
+              />
+              <label class="form-check-label" for="server-create">
+                Enable order creation from server side</label
+              >
+            </div>
             <div>
               <label id="envLabel" for="environment"> Environment: </label>
               <strong id="warning" style="color:red;display:none">
@@ -154,8 +59,6 @@
               <select class="custom-select" name="environment" id="environment">
                 <option value="0" selected>Select environment</option>
                 <option value="sandbox">Sandbox</option>
-                <option value="msmaster">msmaster</option>
-                <option value="live">live</option>
                 <option value="stage">Test Environment</option>
               </select>
             </div>
@@ -165,8 +68,8 @@
                 <option selected value="0"
                   >Please select a test environment</option
                 >
-                <option value="te-alm-23316952001471623082593"
-                  >te-alm-23316952001471623082593</option
+                <option value="te-heroku"
+                  >te-heroku</option
                 >
                 <option value="other">other</option>
               </select>
@@ -337,7 +240,6 @@
           id="submit-btn"
           type="submit"
           class="btn btn-primary ppstyle"
-          style="width:10%;"
         >
           Submit
         </button>
@@ -355,11 +257,9 @@
       integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
       crossorigin="anonymous"
     ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" 
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" 
+    crossorigin="anonymous"></script>
     <script src="index.js"></script>
   </body>
 </html>

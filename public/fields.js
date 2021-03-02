@@ -9,6 +9,9 @@ let environment = urlParams.get('environment')
 const testEnv = urlParams.get('test-env')
 const otherTe = urlParams.get('other-test-env')
 console.log({ environment, testEnv, otherTe })
+
+// Test environment only used for JS SDK integration 
+// All API calls made to partner stage
 if (environment === 'stage') {
   if (testEnv === 'other') {
     environment = otherTe
@@ -104,6 +107,6 @@ const src = configureSdk(clientId, environment, apm, buyerCountry, currency)
 let script = document.createElement('SCRIPT')
 script.src = src
 script.onload = function() {
-  apmRender(apm, style, order, urlParams, environment, name)
+  apmRender(apm, style, order, environment, name)
 }
 document.head.appendChild(script)
