@@ -18,7 +18,8 @@
     "nodemon": "^2.0.4",
     "react-dev-utils": "^10.2.1",
     "request": "^2.88.2",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/node": "^7.12.1"

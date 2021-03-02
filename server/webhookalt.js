@@ -1,29 +1,19 @@
 /* eslint-disable no-nested-ternary */
 const fetch = require('node-fetch')
-const dotenv = require('dotenv')
 const _ = require('lodash')
 const HttpsProxyAgent = require('https-proxy-agent');
+const {getPayPalApi} = require('./ppapi')
+require('dotenv').config();
 
 const proxy = process.env.QUOTAGUARDSTATIC_URL;
 const agent = new HttpsProxyAgent(proxy);
 
 const { getAuthToken } = require('./oauth')
 
-dotenv.config()
-
 // Used for making API calls to subscribe to and verify webhooks
-const PROD = 'https://api.paypal.com'
-const SANDBOX = 'https://api.sandbox.paypal.com'
-const STAGE = `https://api.heroku.stage.paypal.com`
+const {BASE_URL} = getPayPalApi();
 
 const SERVER_URL = process.env.SERVER_URL || 'http://localhost:8080'
-
-const BASE_URL =
-  process.env.NODE_ENV === 'production'
-    ? PROD
-    : process.env.NODE_ENV === 'sandbox'
-    ? SANDBOX
-    : STAGE
 
 let hooks = {}
 
@@ -58,6 +48,7 @@ const verifyWebhook = async (req, res, next) => {
   // NOTE: this will always fail with webhooks sent by the simulator: https://developer.paypal.com/developer/webhooksSimulator/ so if using the simulator, remove this line.
 
   const { access_token } = await getAuthToken()
+  
 
   const id = hooks[url]
   const body = {
@@ -71,7 +62,8 @@ const verifyWebhook = async (req, res, next) => {
   }
   const response = await fetch(
     `${BASE_URL}/v1/notifications/verify-webhook-signature`,
-    { agent,
+    { 
+      // agent,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${access_token}`,
@@ -98,7 +90,7 @@ const captureOrder = async link => {
   let splitLink = link.split('/')
   splitLink.pop()
   const order = splitLink.pop()
-  if (BASE_URL===STAGE) {link = STAGE+`/v2/checkout/orders/${order}/capture`}
+  link = BASE_URL+`/v2/checkout/orders/${order}/capture`
   console.log({link})
   const res = await fetch(link, {
     agent,
@@ -145,9 +137,10 @@ const orderApproved = async (req, res) => {
 const getHookID = async url => {
   try {
     const { access_token } = await getAuthToken()
+    console.log({access_token})
     // Gets all assigned webhooks for this account: https://developer.paypal.com/docs/api/webhooks/v1/#webhooks_list
     const res = await fetch(BASE_URL + '/v1/notifications/webhooks', {
-      agent,
+      // agent,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${access_token}`,
@@ -193,10 +186,11 @@ const subscribeToHook = async (url, events) => {
           value: event_types,
         },
       ]
+
       const res = await fetch(
         `${BASE_URL}/v1/notifications/webhooks/${hookID}`,
         {
-          agent,
+          // agent,
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${access_token}`,

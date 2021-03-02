@@ -49,7 +49,7 @@ export async function getOrder(req, res) {
       'Content-type': 'application/json',
       Authorization: `Bearer ${access_token}`,
     },
-    httpsAgent: agent,
+    // httpsAgent: agent,
   }
 
   try {
