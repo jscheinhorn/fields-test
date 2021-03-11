@@ -93,7 +93,7 @@ const captureOrder = async link => {
   link = BASE_URL+`/v2/checkout/orders/${order}/capture`
   console.log({link})
   const res = await fetch(link, {
-    agent,
+    // agent,
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${access_token}`,
@@ -215,7 +215,7 @@ const subscribeToHook = async (url, events) => {
         event_types,
       }
       const response = await fetch(`${BASE_URL}/v1/notifications/webhooks`, {
-        agent,
+        // agent,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${access_token}`,

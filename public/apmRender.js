@@ -9,6 +9,7 @@ export default function apmRender(
   order,
   environment,
   name,
+  serverCreate
 ) {
   console.log('PayPal SDK version:', paypal.version)
 
@@ -105,16 +106,20 @@ export default function apmRender(
         },
 
         createOrder(data, actions) {
-          /** Used to Test if Accepts Existing Order **/
-          // let fetchData = {order, environment}
-          // return fetch('/api/createorder', {
-          //   method: 'post',
-          //   headers: {
-          //       'content-type': 'application/json',
-          //     },
-          //   body: JSON.stringify(fetchData)
-          // }).then(orderInfo => orderInfo.json())
-          // .then(orderInfoJson => orderInfoJson.id)
+          console.log({serverCreate})
+          if (serverCreate === '1') {
+            console.log('Creating order via server-side call')
+            /** Used to Test if Accepts Existing Order **/
+            let fetchData = {order, environment}
+            return fetch('/api/createorder', {
+              method: 'post',
+              headers: {
+                  'content-type': 'application/json',
+                },
+              body: JSON.stringify(fetchData)
+            }).then(orderInfo => orderInfo.json())
+            .then(orderInfoJson => orderInfoJson.id)
+          }
           return actions.order.create(order)
         },
 

@@ -9,8 +9,9 @@ const agent = new HttpsProxyAgent(proxy);
 
 // Create Order Request
 export async function createOrder(req, res) {
+  console.log('Server-side order creation')
   const { order, environment } = req.body
-  const { access_token } = await getAuthToken(environment)
+  const { access_token } = await getAuthToken()
   const orderUrl = getOrderUrl(environment)
   const agentOptions = {
     rejectUnauthorized: false,

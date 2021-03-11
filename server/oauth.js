@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-const btoa = require('btoa')
 const url = require('url')
 const fetch = require('node-fetch')
 const axios = require('axios')
@@ -20,7 +19,7 @@ const axiosProxy = {
 
 const agent = new HttpsProxyAgent(proxy);
 
-const {BASE_URL, bearer} = getPayPalApi();
+// let {BASE_URL, bearer} = getPayPalApi();
 
 // const axiosRequestOptions = {
 //   method: 'post',
@@ -38,7 +37,9 @@ const {BASE_URL, bearer} = getPayPalApi();
 // https://developer.paypal.com/docs/api/get-an-access-token-curl/
 
 async function getAuthToken() {
-  console.log({ BASE_URL })
+  console.log(process.env.NODE_ENV, { BASE_URL })
+  let {BASE_URL, bearer} = getPayPalApi();
+  console.log(process.env.NODE_ENV, { BASE_URL })
   const response = await fetch(`${BASE_URL}/v1/oauth2/token`, {
     // agent,
     body: 'grant_type=client_credentials',

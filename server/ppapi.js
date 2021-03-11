@@ -1,3 +1,4 @@
+const btoa = require('btoa')
 require('dotenv').config()
 
 export function getPayPalApi() {

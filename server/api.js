@@ -1,5 +1,6 @@
 /* eslint-disable new-cap */
 const paymentapi = require('./paymentapi')
+const setenv = require('./setenv')
 const configinfo = require('./configinfo')
 const webhooks = require('./webhookalt')
 const { catchErrors } = require('./errors')
@@ -18,6 +19,9 @@ router.post('/getorder', catchErrors(paymentapi.getOrder))
 
 // Capture Order
 router.post('/capture', catchErrors(paymentapi.captureOrderHandler))
+
+// Set Environment
+router.post('/setenv', catchErrors(setenv.setEnvironment))
 
 // TODO: Delete these, not doing server side
 // Server Side API Routes to create order/payment

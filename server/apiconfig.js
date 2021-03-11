@@ -31,6 +31,9 @@ export function getApiConfig(environment) {
     case 'sandbox':
       apiConfig = apienv.SANDBOX
       break
+    case 'partner':
+      apiConfig = apienv.PARTNER
+      break
     default:
       apiConfig = apienv.MSMASTER
       break
@@ -43,8 +46,8 @@ export function normalizeStageContext(context, stage) {
   let newContext = context
   if (stage) {
     if (newContext.includes('msmaster')) {
-      newContext = newContext.replace('msmaster.qa', 'heroku.stage')
-      newContext = newContext.replace(':12326', '')
+      newContext = newContext.replace('msmaster', stage)
+      console.log({newContext})
     }
   }
   return newContext

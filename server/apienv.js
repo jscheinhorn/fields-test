@@ -20,6 +20,18 @@ export default {
   },
   MSMASTER: {
     apiHost: 'https://api.msmaster.qa.paypal.com/nvp',
+    postPaymentUrl: 'https://msmaster.qa.paypal.com/v1/payments/payment',
+    cartUrl: 'https://msmaster.qa.paypal.com/v1/payments/carts',
+    transactionUrl: 'https://msmaster.qa.paypal.com/v1/payments/sale',
+    ordersUrl: 'https://api.msmaster.qa.paypal.com/v2/checkout/orders',
+    capturesUrl: 'https://msmaster.qa.paypal.com/v2/payments/captures',
+    thirdPartyMerchantEmail: 'mbathula-merchant@paypal.com',
+    authUrl: 'https://api.msmaster.qa.paypal.com/v1/oauth2/token',
+    activitiesUrl:
+      'https://msmaster.qa.paypal.com/v1/activities/activities',
+  },
+  MSMASTER2: {
+    apiHost: 'https://api.msmaster.qa.paypal.com/nvp',
     postPaymentUrl: 'https://msmaster.qa.paypal.com:17266/v1/payments/payment',
     cartUrl: 'https://msmaster.qa.paypal.com:17266/v1/payments/carts',
     transactionUrl: 'https://msmaster.qa.paypal.com:11881/v1/payments/sale',
@@ -29,5 +41,17 @@ export default {
     authUrl: 'https://api.msmaster.qa.paypal.com:12714/v1/oauth2/token',
     activitiesUrl:
       'https://msmaster.qa.paypal.com:16156/v1/activities/activities',
+  },
+  PARTNER: {
+    apiHost: 'https://api.heroku.stage.paypal.com/nvp',
+    postPaymentUrl: 'https://heroku.stage.paypal.com/v1/payments/payment',
+    cartUrl: 'https://heroku.stage.paypal.com:17266/v1/payments/carts',
+    transactionUrl: 'https://heroku.stage.paypal.com/v1/payments/sale',
+    ordersUrl: 'https://api.heroku.stage.paypal.com/v2/checkout/orders',
+    capturesUrl: 'https://heroku.stage.paypal.com/v2/payments/captures',
+    thirdPartyMerchantEmail: 'mbathula-merchant@paypal.com',
+    authUrl: 'https://api.heroku.stage.paypal.com/v1/oauth2/token',
+    activitiesUrl:
+      'https://heroku.stage.paypal.com/v1/activities/activities',
   },
 }
